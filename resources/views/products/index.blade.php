@@ -16,7 +16,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
 									<div class="col-sm-6 col-md-4 col-xl-3">
-										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة مسؤل جديد</a>
+										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة موديل جديد</a>
 									</div>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
@@ -44,41 +44,40 @@
 										<thead>
 											<tr>
 												<th class="border-bottom-0">#</th>
-												<th class="border-bottom-0">الاسم</th>
+												<th class="border-bottom-0">اسم الموديل</th>
 												{{-- <th class="border-bottom-0">اسم المستخدم</th> --}}
-												<th class="border-bottom-0">موبايل</th>
-												<th class="border-bottom-0">البريد الالكتروني</th>
-												<th class="border-bottom-0">الحالة</th>
-												<th class="border-bottom-0">العمليات</th>
+												<th class="border-bottom-0">السعر</th>
+												{{-- <th class="border-bottom-0">البريد الالكتروني</th>
+												<th class="border-bottom-0">الحالة</th>--}}
+												<th class="border-bottom-0">العمليات</th> 
 											</tr>
 										</thead>
 										<tbody>
 											<?php $i = 0 ;?>
-											@foreach ($users as $user)
+											@foreach ($products as $product)
 											<?php $i ++ ;?>
 											<tr class="">
 												<td>{{$i}}</td>
-												<td>{{$user->name}}</td>
-												{{-- <td>{{$user->user_name}}</td> --}}
-												<td>{{$user->phone}}</td>
+												<td>{{$product->product_name}}</td>
+												<td>{{$product->product_price}}</td>
 												
-												<td>{{$user->email}}</td>
+												{{-- <td>{{$product->email}}</td> --}}
 												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
-												<td>{{$user->status}}</td>
+												{{-- <td>{{$product->status}}</td> --}}
 												
 												<td>
-													<a class="modal-effect btn btn-primary user-dialog" 
-													data-id="{{$user->id}}" 
-													data-name="{{$user->name}}" 
-													data-phone="{{$user->phone}}"  
-													data-email="{{$user->email}}" 
-													data-com_code="{{$user->com_code}}"
-													data-address="{{$user->address}}"
-													data-role="{{$user->role}}"
-													data-user_name="{{$user->user_name}}"
+													<a class="modal-effect btn btn-primary product-dialog" 
+													data-id="{{$product->id}}" 
+													data-name="{{$product->name}}" 
+													data-phone="{{$product->phone}}"  
+													data-email="{{$product->email}}" 
+													data-com_code="{{$product->com_code}}"
+													data-address="{{$product->address}}"
+													data-role="{{$product->role}}"
+													data-product="{{$product->product_name}}"
 													
 													data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">تعديل</a>
-													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$user->id}}" data-name="{{$user->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+													<a class="modal-effect btn btn-danger product-dialog" data-id="{{$product->id}}" data-name="{{$product->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
 												</td>
 											</tr>
 											@endforeach
@@ -88,8 +87,9 @@
 							</div>
 						</div>
 					</div>
+					
 					<div class="modal" id="modaldemo2">
-						<form class="modal-dialog" action="{{route('admin.admins.destroy' , $user->id)}}" method="POST">
+						<form class="modal-dialog" action="{{route('admin.admins.destroy' , $product->id)}}" method="POST">
 							@csrf
 							@method('DELETE')
 							<div class="modal-content">
@@ -111,6 +111,45 @@
 							</div>
 						  </form>
 					</div>
+					<div class="modal" id="modaldemo8">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content modal-content-demo">
+								<div class="modal-header">
+									<h6 class="modal-title">اضافة موديل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body">
+									<form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">>
+										@csrf
+										<div class="row">
+
+										<div class="mb-3 col-md-6">
+										  <label for="exampleInputEmail1" class="form-label">اسم الموديل</label>
+										  <input type="text" name="product_name" placeholder="اسم الموديل" class="form-control">
+										</div>
+
+										<div class="mb-3 col-md-6">
+											<label for="exampleInputEmail1" class="form-label">سعر الموديل</label>
+											<input type="number" name="product_price" placeholder="سعر الموديل" class="form-control">
+										  </div>
+
+										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label">الصورة</label>
+											<input type="file" name="product_image" placeholder="الصورة " class="form-control">
+										  </div
+
+
+									</div>
+									<div class="modal-footer">
+										<button class="btn ripple btn-primary" type="submit">حفظ</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
+									</div>
+
+									  </form>		
+												</div>
+						
+							</div>
+						</div>
+					</div>
 					<div class="modal" id="modaldemo1">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 							<div class="modal-content modal-content-demo">
@@ -118,48 +157,38 @@
 									<h6 class="modal-title">  تعديل</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 								</div>
 								<div class="modal-body">
-									<form action="{{route('admin.admins.update' , $user->id)}}" method="POST">
+									<form action="{{route('admin.admins.update' , $product->id)}}" method="POST">
 										@csrf
 										@method('PUT')
 										<div class="row">
 			
 												<input type="hidden" name="id" id=id>
 											
+
+												<div class="mb-3 col-md-12">
+													<label for="exampleInputEmail1" class="form-label">رقم الموديل</label>
+													<input type="text" name="model_number" id="product_number" class="form-control">
+												  </div>
+
+
 										<div class="mb-3 col-md-12">
-										  <label for="exampleInputEmail1" class="form-label">الاسم</label>
-										  <input type="text" name="name" id="name" placeholder="الاسم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  <label for="exampleInputEmail1" class="form-label">اسم الموديل</label>
+										  <input type="text" name="product_name" id="product_name"  class="form-control">
 										</div>
-			
-										{{-- <label for="exampleInputEmail1" class="form-label">اسم المستخدم</label> --}}
-										 <input type="hidden" name="user_name" id="user_name" placeholder="الاسم" class="form-control">
-								
-										
-											{{-- <label for="exampleInputEmail1" class="form-label">كود الشركة</label> --}}
-											<input type="hidden" name="com_code" id="com_code" placeholder="الاسم" class="form-control">
-										  
-			
-										  
-											{{-- <label for="exampleInputEmail1" class="form-label">العنوان</label> --}}
-											<input type="hidden" name="address" id="address" placeholder="الاسم" class="form-control">
-										  
-			
-										  
-											{{-- <label for="exampleInputEmail1" class="form-label">رول</label> --}}
-											<input type="hidden" name="role" id="role" placeholder="الاسم" class="form-control" >
-										  
-										  <div class="mb-3 col-md-6">
-											<label for="exampleInputEmail1" class="form-label">موبايل </label>
-											<input type="name" name="phone" id="phone" placeholder="موبايل" class="form-control"  aria-describedby="emailHelp">
+
+
+
+										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label">سعر الموديل</label>
+											<input type="number" name="product_price" id="product_price"  class="form-control">
 										  </div>
-										  <div class="mb-3 col-md-6">
-											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
-											<input type="email" name="email" id="email" placeholder="البريد الالكتروني"  class="form-control"  aria-describedby="emailHelp">
-										  </div>
-									</div>
+
+			
+	
 									
 									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">Save changes</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+										<button class="btn ripple btn-primary" type="submit">حفظ</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
 									</div>
 									  </form>		
 												</div>
@@ -168,47 +197,7 @@
 						</div>
 					</div>
 
-					<div class="modal" id="modaldemo8">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content modal-content-demo">
-								<div class="modal-header">
-									<h6 class="modal-title">اضافة مسؤل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-								</div>
-								<div class="modal-body">
-									<form action="{{route('admin.admins.store')}}" method="POST">
-										@csrf
-										<div class="row">
-										<div class="mb-3 col-md-6">
-										  <label for="exampleInputEmail1" class="form-label">الاسم</label>
-										  <input type="name" name="name" placeholder="الاسم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										</div>
-										<div class="mb-3 col-md-6">
-											<label for="exampleInputEmail1" class="form-label">اسم المستخدم</label>
-											<input type="user_name" name="user_name" placeholder="اسم المستخدم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">العنوان </label>
-											<input type="user_name" name="address" placeholder="العنوان" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">موبايل </label>
-											<input type="user_name" name="phone" placeholder="موبايل" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
-											<input type="email" name="email" placeholder="البريد الالكتروني " class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-									</div>
-									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">Save changes</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
-									</div>
-									  </form>		
-												</div>
-						
-							</div>
-						</div>
-					</div>
+		
 				</div>
 				</div>
 				<!-- /row -->
@@ -220,7 +209,7 @@
 @endsection
 @section('js')
 <script>
-	$(document).on("click", ".user-dialog", function () 
+	$(document).on("click", ".product-dialog", function () 
 	{
 		var id = $(this).data('id');
     	 $("#modaldemo1 #id").val( id );
@@ -228,8 +217,8 @@
 		var name = $(this).data('name');
     	 $("#modaldemo1 #name").val( name );
 	
-		var user_name = $(this).data('user_name');
-		$("#modaldemo1 #user_name").val( user_name );
+		var product_name = $(this).data('product_name');
+		$("#modaldemo1 #product_name").val( product_name );
 
 		var phone = $(this).data('phone');
 		$("#modaldemo1 #phone").val( phone );

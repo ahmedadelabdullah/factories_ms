@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerInvoiceController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +17,8 @@ use App\Http\Controllers\CustomerInvoiceController;
 */
 Route::view('/', 'auth.login')->name('login');
 
-// Start Admins Routes
+Route::middleware(['auth'])->group(function () {
+   // Start Admins Routes
 
 Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     // Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
@@ -33,6 +35,7 @@ Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->gro
 // End Admins Routes
 
 Route::resource('/customerinvoices', CustomerInvoiceController::class);
+Route::resource('/products', ProductController::class);
 
 
 // Start Owners Routes
@@ -77,6 +80,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // End Custosmers Routes
+ 
+});
+
 
 
 
