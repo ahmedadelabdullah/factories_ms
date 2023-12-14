@@ -43,14 +43,18 @@ class ProfileController extends Controller
         $data->address = $request->address;
         $data->phone = $request->phone;
         $data->email = $request->email;
-        // dd($request->file('photo'));
+
+
         if($request->file('photo')){
-        $file = $request->file('photo');
-        $newName = date('Ymdhi').$file->getClientOriginalName();
-        move_uploaded_file($_FILES['photo']['tmp_name'], public_path('uploads/profile_images/'.$newName));
-        $data['photo'] = $newName;
-        }
-                 
+            $file = $request->file('photo');
+            
+            $image = explode(".",$file->getClientOriginalName());
+            $newName = date('Ymdhi.').$image[1];
+            // dd($newName);
+             move_uploaded_file($_FILES['photo']['tmp_name'], public_path('uploads/profile_images/'.$newName));
+            $data['photo'] = $newName;
+
+            }
 
         $data->save();
 
