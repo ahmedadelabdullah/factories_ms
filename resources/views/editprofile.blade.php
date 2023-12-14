@@ -2,6 +2,9 @@
 @section('css')
 <!-- Internal Select2 css -->
 <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
 @endsection
 @section('page-header')
 				<!-- breadcrumb -->
@@ -49,7 +52,7 @@
 								<div class="pl-0">
 									<div class="main-profile-overview">
 										<div class="main-img-user profile-user">
-											<img alt="" src="{{URL::asset('assets/img/faces/6.jpg')}}"><a class="fas fa-camera profile-edit" href="JavaScript:void(0);"></a>
+											<img alt="" src="{{(!empty(Auth::user()->photo)) ? url('uploads/profile_images/' . Auth::user()->photo) : url('uploads/profile_images/no_image.png')}}"><a class="fas fa-camera profile-edit" href="JavaScript:void(0);"></a>
 										</div>
 										<div class="d-flex justify-content-between mg-b-20">
 											<div class="text-capitalize">
@@ -105,6 +108,9 @@
 													<span>address</span> <a href="">{{$user->address}}</a>
 												</div>
 											</div>
+
+											
+										
 									
 			
 										</div>
@@ -122,15 +128,16 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="mb-4 main-content-label">Personal Information</div>
-								<form class="form-horizontal" action="{{route('admin.profile.update')}}">
-							
+								<form class="form-horizontal" action="{{route('admin.profile.update')}}" method="POST" enctype="multipart/form-data">
+							@csrf
+							@method('PATCH')
 									<div class="form-group ">
 										<div class="row">
 											<div class="col-md-3">
 												<label class="form-label">Name</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="User Name" value="{{$user->name}}">
+												<input type="text" name="name" class="form-control"  placeholder="User Name" value="{{$user->name}}">
 											</div>
 										</div>
 									</div>
@@ -140,7 +147,7 @@
 												<label class="form-label">User Name</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="User Name" value="{{$user->user_name}}">
+												<input type="text" name="user_name" class="form-control"  placeholder="User Name" value="{{$user->user_name}}">
 											</div>
 										</div>
 									</div>
@@ -150,7 +157,7 @@
 												<label class="form-label">Phone</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="First Name" value="{{$user->phone}}">
+												<input type="text" name="phone" class="form-control"  placeholder="Phone" value="{{$user->phone}}">
 											</div>
 										</div>
 									</div>
@@ -160,7 +167,8 @@
 												<label class="form-label">Email</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="Last Name" value="{{$user->email}}">
+												<input type="text" name="email" class="form-control"  placeholder="Last Name" value="{{$user->email}}">
+											{{$errors->first('email')}}
 											</div>
 										</div>
 									</div>
@@ -170,7 +178,7 @@
 												<label class="form-label">Address</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="Nick Name" value="{{$user->address}}">
+												<input type="text" name="address" class="form-control"  placeholder="Nick Name" value="{{$user->address}}">
 											</div>
 										</div>
 									</div>
@@ -181,19 +189,29 @@
 												<label class="form-label">Photo</label>
 											</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control"  placeholder="Nick Name" value="{{$user->address}}">
+												<input type="file" name="photo" class="form-control" id="image">
+
 											</div>
 										</div>
 									</div>
-									
-					
-								
-									
+
+									<div class="form-group ">
+										<div class="row">
+											<div class="col-md-3">
+												<label class="form-label"></label>
+											</div>
+											<div class="col-md-9">
+												<img alt="user-img"  id="image_view" class="avatar avatar-xl brround" src="{{(!empty(Auth::user()->photo)) ? url('uploads/profile_images/' . Auth::user()->photo) : url('uploads/profile_images/no_image.png')}}">
+
+											</div>
+										</div>
+									</div>
+									<div class="card-footer text-left">
+										<button type="submit" class="btn btn-primary waves-effect waves-light">Update Profile</button>
+									</div>
 								</form>
 							</div>
-							<div class="card-footer text-left">
-								<button type="submit" class="btn btn-primary waves-effect waves-light">Update Profile</button>
-							</div>
+							
 						</div>
 					</div>
 					<!-- /Col -->
@@ -203,6 +221,18 @@
 			<!-- Container closed -->
 		</div>
 		<!-- main-content closed -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+			  $('#image').change(function(e){
+				var reader = new FileReader();
+				reader.onload = function(e){
+				  $('#image_view').attr('src' , e.target.result);
+				}
+				reader.readAsDataURL(e.target.files['0']);
+			  });
+			});
+			  </script>
+			
 @endsection
 @section('js')
 <!--Internal  Chart.bundle js -->

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+
 
 class ProfileController extends Controller
 {
@@ -16,26 +18,44 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        // dd($request->user());
+        //  dd($request->user());
         return view('editprofile', [
             'user' => $request->user(),
         ]);
     }
 
+    public function u(Request $request): View
+    {
+          dd($request->all());
+  
+    }
+
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
-        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $id  = Auth::user()->id;
+        $data  = User::find($id);
+        $data->user_name = $request->user_name;
+        $data->name = $request->name;
+        $data->address = $request->address;
+        $data->phone = $request->phone;
+        $data->email = $request->email;
+        // dd($request->file('photo'));
+        if($request->file('photo')){
+        $file = $request->file('photo');
+        $newName = date('Ymdhi').$file->getClientOriginalName();
+        move_uploaded_file($_FILES['photo']['tmp_name'], public_path('uploads/profile_images/'.$newName));
+        $data['photo'] = $newName;
         }
+                 
 
-        $request->user()->save();
+        $data->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+
+        return Redirect::route('admin.profile.edit')->with('status', 'profile-updated');
     }
 
     /**

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
@@ -16,7 +17,8 @@ class AdminController extends Controller
      */
    public function index()
    {
-       //
+    $users = User::where('role' , 'admin')->get();
+       return view('admins.index' , compact('users'));
    }
 
     /**
@@ -26,7 +28,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        
+        
     }
 
     /**
@@ -37,7 +40,18 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [];
+        $data['name'] = $request->name;
+        $data['user_name'] = $request->user_name;
+        $data['email'] = $request->email;
+        $data['phone'] = $request->phone;
+        $data['com_code'] = 1;
+        $data['address'] = $request->address;
+        $data['role'] = 'admin';
+        $data['password'] = Hash::make(123);
+
+        $user = User::create($data);
+        return redirect()->route('admin.admins.index')->with('adding', 'تم اضافة العنصر بنجاح');
     }
 
     /**
@@ -59,7 +73,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        //
+      
+        
     }
 
     /**
@@ -71,7 +86,19 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    $id = $request->id;
+       $admin = User::findOrFail($id);
+        $admin->update([
+            'name' => $request->name,
+            'user_name' => $request->user_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'com_code' => $request->com_code,
+            'address' => $request->address,
+            'role' => $request->role,
+            
+        ]);
+    return redirect()->route('admin.admins.index')->with('success', 'تم تحديث البيانات بتجاح');
     }
 
     /**
@@ -80,9 +107,22 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+
+    
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request , $id)
     {
-        //
+        $id = $request->id;
+        $admin = User::findOrFail($id);
+        $admin->delete();
+        return redirect()->route('admin.admins.index')->with('delete', 'تم حذف العنصر بنجاح');
     }
 
     public function logout(Request $request)

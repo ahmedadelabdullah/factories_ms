@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,28 +14,25 @@ use App\Http\Controllers\AdminController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::view('/', 'auth.login')->name('login');
 
 // Start Admins Routes
 
 Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
-    Route::view('/dashboard', 'admins.dashboard')->name('admins.dashboard');
+    // Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
+    Route::view('/dashboard', 'admins.dashboard')->name('dashboard');
+    // Route::view('/admins', 'admins.index')->name('index');
+
     Route::get('/logout', [AdminController::class , 'logout'])->name('logout');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::resource('/', AdminController::class);
-
-
+    Route::resource('/admins', AdminController::class);
 });
-
-
-
-
 // End Admins Routes
 
+Route::resource('/customerinvoices', CustomerInvoiceController::class);
 
 
 // Start Owners Routes
