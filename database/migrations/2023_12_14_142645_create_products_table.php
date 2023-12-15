@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('product_code')->nullable();
             $table->string('product_name');
             $table->string('product_price');
+            $table->tinyInteger('colors_number')->nullable();
             $table->string('product_image')->nullable();
             $table->timestamps();
         });

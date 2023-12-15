@@ -47,6 +47,8 @@
 												<th class="border-bottom-0">اسم الموديل</th>
 												{{-- <th class="border-bottom-0">اسم المستخدم</th> --}}
 												<th class="border-bottom-0">السعر</th>
+												<th class="border-bottom-0">صورة</th>
+											
 												{{-- <th class="border-bottom-0">البريد الالكتروني</th>
 												<th class="border-bottom-0">الحالة</th>--}}
 												<th class="border-bottom-0">العمليات</th> 
@@ -62,7 +64,7 @@
 												<td>{{$product->product_price}}</td>
 												
 												{{-- <td>{{$product->email}}</td> --}}
-												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
+												<td><img src="{{(!empty($product->product_image)) ? url('uploads/product_images/'.$product->product_image) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td>
 												{{-- <td>{{$product->status}}</td> --}}
 												
 												<td>

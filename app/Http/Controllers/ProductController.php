@@ -55,7 +55,6 @@ class ProductController extends Controller
             $data['product_image'] = $newName;
 
             }
-
         $product = Product::create($data);
         return redirect()->route('products.index')->with('adding', 'تم اضافة العنصر بنجاح');
     }
