@@ -1,112 +1,224 @@
 @extends('layouts.master')
 @section('title')
-	{{Request::segment(1)}}
-@endsection
-@section('title')
-	{{Request::segment(1)}}
+ برنامج المنظومة || 	فواتير العملاء  
 @endsection
 @section('css')
-<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
-<link href="{{URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css')}}" rel="stylesheet">
-<link href="{{URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
-<link href="{{URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
-<link href="{{URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
-<link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
+<!--  Owl-carousel css-->
+<link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
+<!-- Maps css -->
+<link href="{{URL::asset('assets/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
 @endsection
-@section('page-header')
-				<!-- breadcrumb -->
-				<div class="breadcrumb-header justify-content-between">
-					<div class="my-auto">
-						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Empty</span>
-						</div>
-					</div>
-					<div class="d-flex my-xl-auto right-content">
-						<div class="pr-1 mb-3 mb-xl-0">
-							<button type="button" class="btn btn-info btn-icon ml-2"><i class="mdi mdi-filter-variant"></i></button>
-						</div>
-						<div class="pr-1 mb-3 mb-xl-0">
-							<button type="button" class="btn btn-danger btn-icon ml-2"><i class="mdi mdi-star"></i></button>
-						</div>
-						<div class="pr-1 mb-3 mb-xl-0">
-							<button type="button" class="btn btn-warning  btn-icon ml-2"><i class="mdi mdi-refresh"></i></button>
-						</div>
-						<div class="mb-3 mb-xl-0">
-							<div class="btn-group dropdown">
-								<button type="button" class="btn btn-primary">14 Aug 2019</button>
-								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuDate" data-x-placement="bottom-end">
-									<a class="dropdown-item" href="#">2015</a>
-									<a class="dropdown-item" href="#">2016</a>
-									<a class="dropdown-item" href="#">2017</a>
-									<a class="dropdown-item" href="#">2018</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- breadcrumb -->
-@endsection
+
 @section('content')
-				<!-- row -->
-				<div class="row">
+<div class="row">
 					<div class="col-xl-12">
 						<div class="card mg-b-20">
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
-									<h4 class="card-title mg-b-0">Bordered Table</h4>
+									<div class="col-sm-6 col-md-4 col-xl-3">
+										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة فاتورة عميل   جديده</a>
+									</div>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
-								<p class="tx-12 tx-gray-500 mb-2">Example of Valex Bordered Table.. <a href="">Learn more</a></p>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table id="example" class="table key-buttons text-md-nowrap">
+									<table id="example" class="table key-buttons text-md-nowrap w-100">
+										@if(session('success'))
+										<div class="alert alert-success" id="alert-success">
+										{{session('success')}}
+									  </div>
+									  @endif
+
+									  @if(session('delete'))
+									  <div class="alert alert-danger">
+									  {{session('delete')}}
+									</div>
+									@endif
+
+									@if(session('adding'))
+									<div class="alert alert-success">
+									{{session('adding')}}
+								  </div>
+								  @endif
 										<thead>
 											<tr>
-												<th class="border-bottom-0">Name</th>
-												<th class="border-bottom-0">Position</th>
-												<th class="border-bottom-0">Office</th>
-												<th class="border-bottom-0">Age</th>
-												<th class="border-bottom-0">Start date</th>
-												<th class="border-bottom-0">Salary</th>
+												<th class="border-bottom-0">#</th>
+												<th class="border-bottom-0"> الفاتورة</th>
+												<th class="border-bottom-0">العميل</th>
+												<th class="border-bottom-0"> القطع</th>
+												<th class="border-bottom-0"> الموديلات</th>
+												<th class="border-bottom-0">التاريخ </th>
+												<th class="border-bottom-0">الخصم </th>
+												<th class="border-bottom-0">الخصم الكلي</th>
+												<th class="border-bottom-0"> الصورة</th>
+												<th class="border-bottom-0"> المبلغ الكلي</th>
+												<th class="border-bottom-0">العمليات</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>Tiger Nixon</td>
-												<td>System Architect</td>
-												<td>Edinburgh</td>
-												<td>61</td>
-												<td>2011/04/25</td>
-												<td>$320,800</td>
+											<?php $i = 0 ;?>
+											@foreach ($customer_invoices as $customer_invoice)
+											<?php $i ++ ;?>
+											<tr class="">
+												<td>{{$i}}</td>
+												<td>{{$customer_invoice->invoice_number}}</td>
+												{{-- <td>{{$user->user_name}}</td> --}}
+												<td>{{$customer_invoice->cumtomer_id}}</td>
+												
+												<td>{{$customer_invoice->n_o_pieces}}</td>
+												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
+												<td>{{$customer_invoice->n_o_models}}</td>
+												<td>{{$customer_invoice->date}}</td>
+												<td>{{$customer_invoice->sale_per_piece}}</td>
+												<td>{{$customer_invoice->invoice_sale}}</td>
+												<td>{{$customer_invoice->invoice_image}}</td>
+												<td>{{$customer_invoice->total_amount}}</td>
+												
+												<td>
+													<a class="modal-effect btn btn-primary user-dialog" 
+													data-id="{{$customer_invoice->id}}" 
+													data-name="{{$customer_invoice->name}}" 
+													data-phone="{{$customer_invoice->phone}}"  
+													data-email="{{$customer_invoice->email}}" 
+													data-com_code="{{$customer_invoice->com_code}}"
+													data-address="{{$customer_invoice->address}}"
+													data-role="{{$customer_invoice->role}}"
+													data-user_name="{{$customer_invoice->user_name}}"
+													
+													data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">تعديل</a>
+													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+												</td>
 											</tr>
-									
-											<tr>
-												<td>Donna Snider</td>
-												<td>Customer Support</td>
-												<td>New York</td>
-												<td>27</td>
-												<td>2011/01/25</td>
-												<td>$112,000</td>
-											</tr>
+											@endforeach
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+
+					{{-- <div class="modal" id="modaldemo2">
+						<form class="modal-dialog" action="{{route('admin.admins.destroy' , $user->id)}}" method="POST">
+							@csrf
+							@method('DELETE')
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 class="modal-title">حذف مسؤل</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span>
+								</button>
+							  </div>
+							  <input type="hidden" id="id" name="id">
+							  <div class="modal-body">
+								<p>هل انت متأكد من حذف المسؤل <span id="deletedName"></span></p>
+							  </div>
+							  <div class="modal-footer">
+								<button type="submit" class="btn btn-danger">حذف</button>
+
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+							  </div>
+							</div>
+						  </form>
+					</div> --}}
+
 					
-				<!-- row closed -->
+			
+
+					{{-- <div class="modal" id="modaldemo8">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content modal-content-demo">
+								<div class="modal-header">
+									<h6 class="modal-title">اضافة مسؤل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body">
+									<form action="{{route('admin.admins.store')}}" method="POST">
+										@csrf
+										<div class="row">
+										<div class="mb-3 col-md-6">
+										  <label for="exampleInputEmail1" class="form-label">الاسم</label>
+										  <input type="name" name="name" placeholder="الاسم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="exampleInputEmail1" class="form-label">اسم المستخدم</label>
+											<input type="user_name" name="user_name" placeholder="اسم المستخدم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label">العنوان </label>
+											<input type="user_name" name="address" placeholder="العنوان" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label">موبايل </label>
+											<input type="user_name" name="phone" placeholder="موبايل" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
+											<input type="email" name="email" placeholder="البريد الالكتروني " class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+									</div>
+									<div class="modal-footer">
+										<button class="btn ripple btn-primary" type="submit">Save changes</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+									</div>
+									  </form>		
+												</div>
+						
+							</div>
+						</div>
+					</div> --}}
+
+
+				</div>
+				</div>
+				<!-- /row -->
 			</div>
-			<!-- Container closed -->
 		</div>
-		<!-- main-content closed -->
+
+	
+		<!-- Container closed -->
 @endsection
 @section('js')
+<script>
+	$(document).on("click", ".user-dialog", function () 
+	{
+		var id = $(this).data('id');
+    	 $("#modaldemo1 #id").val( id );
+
+		var name = $(this).data('name');
+    	 $("#modaldemo1 #name").val( name );
+	
+		var user_name = $(this).data('user_name');
+		$("#modaldemo1 #user_name").val( user_name );
+
+		var phone = $(this).data('phone');
+		$("#modaldemo1 #phone").val( phone );
+
+		var email = $(this).data('email');
+		$("#modaldemo1 #email").val( email );
+
+		var com_code = $(this).data('com_code');
+		$("#modaldemo1 #com_code").val( com_code );
+
+		var address = $(this).data('address');
+		$("#modaldemo1 #address").val( address );
+
+		var role = $(this).data('role');
+		$("#modaldemo1 #role").val( role );
+
+		var id = $(this).data('id');
+    	$("#modaldemo2 #id").val( id );
+		
+		var name = $(this).data('name');
+		$("#modaldemo2 #id").val( id );
+		document.getElementById("deletedName").innerHTML = name;
+
+		// $('.alert-success').fadeIn().delay(5000).fadeOut();
+
+
+});
+
+</script>
+<!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
@@ -125,4 +237,6 @@
 <script src="{{URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
 <!--Internal  Datatable js -->
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
+<script src="{{URL::asset('assets/js/modal.js')}}"></script>
+
 @endsection

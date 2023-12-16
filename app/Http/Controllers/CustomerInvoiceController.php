@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CustomerInvoice;
 use App\Http\Requests\StoreCustomerInvoiceRequest;
 use App\Http\Requests\UpdateCustomerInvoiceRequest;
-
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -15,8 +14,8 @@ class CustomerInvoiceController extends Controller
      */
     public function index()
     {
-        
-        return view('customerInvoices.index');
+        $customer_invoices = CustomerInvoice::all();
+        return view('customerInvoices.index' , compact('customer_invoices'));
         
     }
 

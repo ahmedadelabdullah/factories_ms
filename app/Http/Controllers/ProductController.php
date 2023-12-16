@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 
 
 class ProductController extends Controller
@@ -38,20 +39,18 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //  dd($request->file('product_image'));
 
         $data = [];
         $data['product_name'] = $request->product_name;
         $data['product_price'] = $request->product_price;
-        // $data['product_image'] = $request->product_image;
 
-        if($request->file('product_image')){
-            $file = $request->file('product_image');
+        if($request->file('photo')){
+            $file = $request->file('photo');
             
             $image = explode(".",$file->getClientOriginalName());
             $newName = date('Ymdhi.').$image[1];
-            // dd($newName);
-             move_uploaded_file($_FILES['product_image']['tmp_name'], public_path('uploads/product_images/'.$newName));
+
+            move_uploaded_file($_FILES['photo']['tmp_name'], public_path('uploads/product_images/'.$newName));
             $data['product_image'] = $newName;
 
             }
@@ -90,7 +89,23 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $id = $request->id;
+        $admin = Product::findOrFail($id);
+        $data = [];
+        $data['product_name'] = $request->product_name;
+        $data['product_price'] = $request->product_price;
+        if($request->file('photo')){
+            $file = $request->file('photo');
+            $image = explode(".",$file->getClientOriginalName());
+            $newName = date('Ymdhi.').$image[1];
+
+            move_uploaded_file($_FILES['photo']['tmp_name'], public_path('uploads/product_images/'.$newName));
+            $data['product_image'] = $newName;
+
+            }
+        $product = Product::whereId($id)->update($data);
+        return redirect()->route('products.index')->with('adding', 'تم اضافة العنصر بنجاح');
+
     }
 
     /**
@@ -99,8 +114,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request)
     {
-        //
+        // return $request;
+        $id = $request->id;
+        $admin = Product::findOrFail($id);
+        $admin->delete();
+        return redirect()->route('products.index')->with('delete', 'تم حذف العنصر بنجاح');
     }
 }

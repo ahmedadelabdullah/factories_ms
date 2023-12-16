@@ -19,36 +19,43 @@ class ProductSeeder extends Seeder
             [      [
                 'product_name' => 'product 1',
                 'product_price' => '100',
+                'product_code' => 1001
                 
             ],
             [
                 'product_name' => 'product 2',
                 'product_price' => '200',
+                'product_code' => 1002
             ],
             [
                 'product_name' => 'product 3',
                 'product_price' => '300',
+                'product_code' => 1003
             ],
             [
                 'product_name' => 'product 4',
                 'product_price' => '400',
+                'product_code' => 1004
             ],
             [
                 'product_name' => 'product 5',
                 'product_price' => '500',
+                'product_code' => 1005
             ],
             [
                 'product_name' => 'product 6',
                 'product_price' => '600',
+                'product_code' => 1006
             ],
             [
                 'product_name' => 'product 7',
                 'product_price' => '700',
-                'colors_number' => 3,
+                'product_code' => 1007
             ],
             [
             'product_name' => 'product 8',
             'product_price' => '800',
+            'product_code' => 1008
             ]]
         );
     }

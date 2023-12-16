@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
- برنامج المنظومة || 	المسؤلون  
+ برنامج المنظومة || 	المنتجات  
 @endsection
 @section('css')
 <!--  Owl-carousel css-->
@@ -16,7 +16,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
 									<div class="col-sm-6 col-md-4 col-xl-3">
-										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة موديل جديد</a>
+										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة منتج جديد</a>
 									</div>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
@@ -45,13 +45,9 @@
 											<tr>
 												<th class="border-bottom-0">#</th>
 												<th class="border-bottom-0">اسم الموديل</th>
-												{{-- <th class="border-bottom-0">اسم المستخدم</th> --}}
-												<th class="border-bottom-0">السعر</th>
-												<th class="border-bottom-0">صورة</th>
-											
-												{{-- <th class="border-bottom-0">البريد الالكتروني</th>
-												<th class="border-bottom-0">الحالة</th>--}}
-												<th class="border-bottom-0">العمليات</th> 
+												<th class="border-bottom-0">سعر الموديل</th>
+												<th class="border-bottom-0">صورة الموديل </th>
+												<th class="border-bottom-0">العمليات</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -61,25 +57,22 @@
 											<tr class="">
 												<td>{{$i}}</td>
 												<td>{{$product->product_name}}</td>
+												{{-- <td>{{$user->user_name}}</td> --}}
 												<td>{{$product->product_price}}</td>
 												
-												{{-- <td>{{$product->email}}</td> --}}
-												<td><img src="{{(!empty($product->product_image)) ? url('uploads/product_images/'.$product->product_image) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td>
-												{{-- <td>{{$product->status}}</td> --}}
+												<td><img src="{{(!empty($product->product_image)) ? url('uploads/product_images/'.$product->product_image) : url('uploads/product_images/no_image.png')}}" style="width: 50px"></td>
 												
 												<td>
-													<a class="modal-effect btn btn-primary product-dialog" 
+													<a class="modal-effect btn btn-primary user-dialog" 
 													data-id="{{$product->id}}" 
-													data-name="{{$product->name}}" 
-													data-phone="{{$product->phone}}"  
-													data-email="{{$product->email}}" 
-													data-com_code="{{$product->com_code}}"
-													data-address="{{$product->address}}"
-													data-role="{{$product->role}}"
-													data-product="{{$product->product_name}}"
+													data-product_name="{{$product->product_name}}" 
+													data-product_price="{{$product->product_price}}"  
+													data-product_image="{{$product->product_image}}" 
+							
 													
 													data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">تعديل</a>
-													<a class="modal-effect btn btn-danger product-dialog" data-id="{{$product->id}}" data-name="{{$product->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$product->id}}" data-name="{{$product->product_name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+
 												</td>
 											</tr>
 											@endforeach
@@ -89,9 +82,10 @@
 							</div>
 						</div>
 					</div>
-					
+
+					{{-- delete modAL --}}
 					<div class="modal" id="modaldemo2">
-						<form class="modal-dialog" action="{{route('admin.admins.destroy' , $product->id)}}" method="POST">
+						<form class="modal-dialog" action="{{route('products.destroy' , $product->id)}}" method="POST">
 							@csrf
 							@method('DELETE')
 							<div class="modal-content">
@@ -113,45 +107,9 @@
 							</div>
 						  </form>
 					</div>
-					<div class="modal" id="modaldemo8">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content modal-content-demo">
-								<div class="modal-header">
-									<h6 class="modal-title">اضافة موديل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-								</div>
-								<div class="modal-body">
-									<form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">>
-										@csrf
-										<div class="row">
+					{{-- delete modAL --}}
 
-										<div class="mb-3 col-md-6">
-										  <label for="exampleInputEmail1" class="form-label">اسم الموديل</label>
-										  <input type="text" name="product_name" placeholder="اسم الموديل" class="form-control">
-										</div>
-
-										<div class="mb-3 col-md-6">
-											<label for="exampleInputEmail1" class="form-label">سعر الموديل</label>
-											<input type="number" name="product_price" placeholder="سعر الموديل" class="form-control">
-										  </div>
-
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">الصورة</label>
-											<input type="file" name="product_image" placeholder="الصورة " class="form-control">
-										  </div
-
-
-									</div>
-									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">حفظ</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
-									</div>
-
-									  </form>		
-												</div>
-						
-							</div>
-						</div>
-					</div>
+					{{-- edit modaL --}}
 					<div class="modal" id="modaldemo1">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 							<div class="modal-content modal-content-demo">
@@ -159,34 +117,32 @@
 									<h6 class="modal-title">  تعديل</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 								</div>
 								<div class="modal-body">
-									<form action="{{route('admin.admins.update' , $product->id)}}" method="POST">
+									<form action="{{route('products.update' , $product->id)}}" method="POST" enctype="multipart/form-data">
 										@csrf
 										@method('PUT')
 										<div class="row">
 			
 												<input type="hidden" name="id" id=id>
 											
-
-												<div class="mb-3 col-md-12">
-													<label for="exampleInputEmail1" class="form-label">رقم الموديل</label>
-													<input type="text" name="model_number" id="product_number" class="form-control">
-												  </div>
-
-
 										<div class="mb-3 col-md-12">
-										  <label for="exampleInputEmail1" class="form-label">اسم الموديل</label>
-										  <input type="text" name="product_name" id="product_name"  class="form-control">
+										  <label  class="form-label">الاسم</label>
+										  <input type="text" name="product_name" id="product_name"  class="form-control"  aria-describedby="emailHelp">
 										</div>
-
-
-
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">سعر الموديل</label>
-											<input type="number" name="product_price" id="product_price"  class="form-control">
+			
+										<div class="mb-3 col-md-12">
+											<label  class="form-label">السعر</label>
+											<input type="text" name="product_price" id="product_price"  class="form-control"  aria-describedby="emailHelp">
 										  </div>
 
+										  <div class="mb-3 col-md-12">
+											<label  class="form-label">الصورة</label>
+											<input type="file" name="photo" id="photo"  class="form-control"  aria-describedby="emailHelp">
+										  </div>
+									</div>
+									
+
 			
-	
+								</div>
 									
 									<div class="modal-footer">
 										<button class="btn ripple btn-primary" type="submit">حفظ</button>
@@ -198,8 +154,46 @@
 							</div>
 						</div>
 					</div>
+{{-- edit modaL --}}
+{{-- add modaL --}}
 
-		
+					<div class="modal" id="modaldemo8">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content modal-content-demo">
+								<div class="modal-header">
+									<h6 class="modal-title">اضافة موديل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body">
+									<form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
+										@csrf
+										<div class="row">
+										<div class="mb-3 col-md-6">
+										  <label  class="form-label">اسم الموديل</label>
+										  <input type="name" name="product_name" placeholder="اسم الموديل" class="form-control"  aria-describedby="emailHelp">
+										</div>
+										<div class="mb-3 col-md-6">
+											<label  class="form-label">سعر الموديل</label>
+											<input type="user_name" name="product_price" placeholder="سعر الموديل" class="form-control"  aria-describedby="emailHelp">
+										  </div>
+										
+										  <div class="mb-3 col-md-12">
+											<label  class="form-label">صورة الموديل </label>
+											<input type="file" name="photo" placeholder="صورة الموديل " class="form-control"  aria-describedby="emailHelp">
+										  </div>
+										
+									</div>
+									<div class="modal-footer">
+										<button class="btn ripple btn-primary" type="submit">حفظ</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
+									</div>
+									  </form>		
+												</div>
+						
+							</div>
+						</div>
+					</div>
+
+					{{-- add modaL --}}
 				</div>
 				</div>
 				<!-- /row -->
@@ -211,31 +205,17 @@
 @endsection
 @section('js')
 <script>
-	$(document).on("click", ".product-dialog", function () 
+	$(document).on("click", ".user-dialog", function () 
 	{
 		var id = $(this).data('id');
     	 $("#modaldemo1 #id").val( id );
 
-		var name = $(this).data('name');
-    	 $("#modaldemo1 #name").val( name );
-	
 		var product_name = $(this).data('product_name');
-		$("#modaldemo1 #product_name").val( product_name );
-
-		var phone = $(this).data('phone');
-		$("#modaldemo1 #phone").val( phone );
-
-		var email = $(this).data('email');
-		$("#modaldemo1 #email").val( email );
-
-		var com_code = $(this).data('com_code');
-		$("#modaldemo1 #com_code").val( com_code );
-
-		var address = $(this).data('address');
-		$("#modaldemo1 #address").val( address );
-
-		var role = $(this).data('role');
-		$("#modaldemo1 #role").val( role );
+		
+    	 $("#modaldemo1 #product_name").val( product_name );
+	
+		var product_price = $(this).data('product_price');
+		$("#modaldemo1 #product_price").val( product_price );
 
 		var id = $(this).data('id');
     	$("#modaldemo2 #id").val( id );
@@ -243,10 +223,6 @@
 		var name = $(this).data('name');
 		$("#modaldemo2 #id").val( id );
 		document.getElementById("deletedName").innerHTML = name;
-
-		// $('.alert-success').fadeIn().delay(5000).fadeOut();
-
-
 });
 
 </script>
