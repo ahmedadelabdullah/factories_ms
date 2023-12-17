@@ -16,7 +16,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
 									<div class="col-sm-6 col-md-4 col-xl-3">
-										<a class="modal-effect btn btn-primary " data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافة فاتورة عميل   جديده</a>
+										<a class="btn btn-primary"  href="{{route('customerinvoices.create')}}">اضافة فاتورة عميل</a>
 									</div>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
@@ -47,11 +47,8 @@
 												<th class="border-bottom-0"> الفاتورة</th>
 												<th class="border-bottom-0">العميل</th>
 												<th class="border-bottom-0"> القطع</th>
-												<th class="border-bottom-0"> الموديلات</th>
 												<th class="border-bottom-0">التاريخ </th>
-												<th class="border-bottom-0">الخصم </th>
-												<th class="border-bottom-0">الخصم الكلي</th>
-												<th class="border-bottom-0"> الصورة</th>
+		
 												<th class="border-bottom-0"> المبلغ الكلي</th>
 												<th class="border-bottom-0">العمليات</th>
 											</tr>
@@ -68,14 +65,13 @@
 												
 												<td>{{$customer_invoice->n_o_pieces}}</td>
 												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
-												<td>{{$customer_invoice->n_o_models}}</td>
 												<td>{{$customer_invoice->date}}</td>
-												<td>{{$customer_invoice->sale_per_piece}}</td>
-												<td>{{$customer_invoice->invoice_sale}}</td>
-												<td>{{$customer_invoice->invoice_image}}</td>
+									
 												<td>{{$customer_invoice->total_amount}}</td>
 												
 												<td>
+													<a class="modal-effect btn btn-primary user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">تفاصيل</a>
+
 													<a class="modal-effect btn btn-primary user-dialog" 
 													data-id="{{$customer_invoice->id}}" 
 													data-name="{{$customer_invoice->name}}" 
@@ -88,6 +84,7 @@
 													
 													data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">تعديل</a>
 													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+
 												</td>
 											</tr>
 											@endforeach
@@ -97,76 +94,6 @@
 							</div>
 						</div>
 					</div>
-
-					{{-- <div class="modal" id="modaldemo2">
-						<form class="modal-dialog" action="{{route('admin.admins.destroy' , $user->id)}}" method="POST">
-							@csrf
-							@method('DELETE')
-							<div class="modal-content">
-							  <div class="modal-header">
-								<h5 class="modal-title">حذف مسؤل</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								  <span aria-hidden="true">&times;</span>
-								</button>
-							  </div>
-							  <input type="hidden" id="id" name="id">
-							  <div class="modal-body">
-								<p>هل انت متأكد من حذف المسؤل <span id="deletedName"></span></p>
-							  </div>
-							  <div class="modal-footer">
-								<button type="submit" class="btn btn-danger">حذف</button>
-
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-							  </div>
-							</div>
-						  </form>
-					</div> --}}
-
-					
-			
-
-					{{-- <div class="modal" id="modaldemo8">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content modal-content-demo">
-								<div class="modal-header">
-									<h6 class="modal-title">اضافة مسؤل جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-								</div>
-								<div class="modal-body">
-									<form action="{{route('admin.admins.store')}}" method="POST">
-										@csrf
-										<div class="row">
-										<div class="mb-3 col-md-6">
-										  <label for="exampleInputEmail1" class="form-label">الاسم</label>
-										  <input type="name" name="name" placeholder="الاسم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										</div>
-										<div class="mb-3 col-md-6">
-											<label for="exampleInputEmail1" class="form-label">اسم المستخدم</label>
-											<input type="user_name" name="user_name" placeholder="اسم المستخدم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">العنوان </label>
-											<input type="user_name" name="address" placeholder="العنوان" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">موبايل </label>
-											<input type="user_name" name="phone" placeholder="موبايل" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
-											<input type="email" name="email" placeholder="البريد الالكتروني " class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
-									</div>
-									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">Save changes</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
-									</div>
-									  </form>		
-												</div>
-						
-							</div>
-						</div>
-					</div> --}}
-
 
 				</div>
 				</div>

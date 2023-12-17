@@ -129,24 +129,8 @@
 										  <label for="exampleInputEmail1" class="form-label">الاسم</label>
 										  <input type="text" name="name" id="name" placeholder="الاسم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 										</div>
-			
-										{{-- <label for="exampleInputEmail1" class="form-label">اسم المستخدم</label> --}}
-										 <input type="hidden" name="user_name" id="user_name" placeholder="الاسم" class="form-control">
+		
 								
-										
-											{{-- <label for="exampleInputEmail1" class="form-label">كود الشركة</label> --}}
-											<input type="hidden" name="com_code" id="com_code" placeholder="الاسم" class="form-control">
-										  
-			
-										  
-											{{-- <label for="exampleInputEmail1" class="form-label">العنوان</label> --}}
-											<input type="hidden" name="address" id="address" placeholder="الاسم" class="form-control">
-										  
-			
-										  
-											{{-- <label for="exampleInputEmail1" class="form-label">رول</label> --}}
-											<input type="hidden" name="role" id="role" placeholder="الاسم" class="form-control" >
-										  
 										  <div class="mb-3 col-md-6">
 											<label for="exampleInputEmail1" class="form-label">موبايل </label>
 											<input type="name" name="phone" id="phone" placeholder="موبايل" class="form-control"  aria-describedby="emailHelp">
@@ -158,8 +142,8 @@
 									</div>
 									
 									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">Save changes</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+										<button class="btn ripple btn-primary" type="submit">حفظ</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
 									</div>
 									  </form>		
 												</div>
@@ -200,8 +184,8 @@
 										  </div>
 									</div>
 									<div class="modal-footer">
-										<button class="btn ripple btn-primary" type="submit">Save changes</button>
-										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Close</button>
+										<button class="btn ripple btn-primary" type="submit">حفظ</button>
+										<button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
 									</div>
 									  </form>		
 												</div>

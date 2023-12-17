@@ -93,9 +93,9 @@ class AdminController extends Controller
             'user_name' => $request->user_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'com_code' => $request->com_code,
+            'com_code' => 1,
             'address' => $request->address,
-            'role' => $request->role,
+            'role' => 'admin',
             
         ]);
     return redirect()->route('admin.admins.index')->with('success', 'تم تحديث البيانات بتجاح');

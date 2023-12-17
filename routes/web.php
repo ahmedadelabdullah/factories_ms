@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerInvoiceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +37,8 @@ Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->gro
 
 Route::resource('/customerinvoices', CustomerInvoiceController::class);
 Route::resource('/products', ProductController::class);
+Route::resource('/customers', CustomerController::class);
+
 
 
 // Start Owners Routes

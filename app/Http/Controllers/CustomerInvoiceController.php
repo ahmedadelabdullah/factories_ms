@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CustomerInvoice;
 use App\Http\Requests\StoreCustomerInvoiceRequest;
 use App\Http\Requests\UpdateCustomerInvoiceRequest;
+use App\Models\Customer;
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -26,7 +27,8 @@ class CustomerInvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $customers = Customer::all();
+        return view('customerInvoices.create' , compact('customers'));
     }
 
     /**
