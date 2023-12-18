@@ -1,6 +1,9 @@
 @extends('layouts.master')
 @section('css')
 @endsection
+@section('title')
+ برنامج المنظومة || 	فاتورة جديدة   
+@endsection
 @section('page-header')
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
@@ -80,24 +83,54 @@
 										<table class="table table-invoice border text-md-nowrap mb-0">
 											<thead>
 												<tr>
-													<th class="wd-1p">#</th>
-													<th class="wd-20p">Type</th>
-													<th class="wd-40p">Description</th>
-													<th class="tx-center">QNTY</th>
-													<th class="tx-right">Unit Price</th>
-													<th class="tx-right">Amount</th>
+													<th class="wd-10p">#</th>
+													<th class="tx-center wd-10p">الكمية</th>
+													<th class="wd-35p">وصف الموديل </th>
+													<th class="wd-10p">السعر</th>
+													<th class="tx-right">المبلغ</th>
 												</tr>
 											</thead>
 											<tbody>
-									
-									
 												<tr>
-													<td></td>
-													<td class="tx-12"></td>
-													<td class="tx-center">3</td>
-													<td class="tx-right">$850.00</td>
-													<td class="tx-right">$2,550.00</td>
+													<td>1</td>
+													<td class="tx-12"><input type="number" class="form-control"></td>
+													<td class="tx-right">
+														<select class="form-control">
+															<option>اختر موديل</option>
+															@foreach($products as $product)
+															<option value="{{$product->id}}">{{$product->product_name}}</option>
+															@endforeach
+
+														</select>
+													</td>
+													<td class="tx-center"><input type="text" class="form-control"></td>
+													<td class="tx-right"><input type="number" class="form-control"></td>
+				
+													<td class="tx-right"><button  class="btn btn-primary">اضافة</td>
+														<td class="tx-right"><button  class="btn btn-danger">حذف</td>
+
 												</tr>
+
+												<tr>
+													<td>1</td>
+													<td class="tx-12"><input type="number" class="form-control"></td>
+													<td class="tx-right">
+														<select class="form-control">
+															<option>اختر موديل</option>
+															@foreach($products as $product)
+															<option value="{{$product->id}}">{{$product->product_name}}</option>
+															@endforeach
+
+														</select>
+													</td>
+													<td class="tx-center"><input type="text" class="form-control"></td>
+													<td class="tx-right"><input type="number" class="form-control"></td>
+				
+													<td class="tx-right"><button  class="btn btn-primary">اضافة</td>
+														<td class="tx-right"><button  class="btn btn-danger">حذف</td>
+												</tr>
+
+
 												<tr>
 													<td class="valign-middle" colspan="2" rowspan="4">
 														<div class="invoice-notes">

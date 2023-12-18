@@ -6,6 +6,7 @@ use App\Models\CustomerInvoice;
 use App\Http\Requests\StoreCustomerInvoiceRequest;
 use App\Http\Requests\UpdateCustomerInvoiceRequest;
 use App\Models\Customer;
+use App\Models\Product;
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -28,7 +29,9 @@ class CustomerInvoiceController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        return view('customerInvoices.create' , compact('customers'));
+        $products = Product::all();
+
+        return view('customerInvoices.create' , compact('customers' , 'products'));
     }
 
     /**
