@@ -13,7 +13,7 @@ class StoreCustomerInvoiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreCustomerInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'invoice_number' => 'required',
+            'date' => 'required',
+            'n_o_pieces' => 'required',
+            'customer' => 'required',
         ];
     }
 }

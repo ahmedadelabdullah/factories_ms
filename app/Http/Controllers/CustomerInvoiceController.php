@@ -42,7 +42,7 @@ class CustomerInvoiceController extends Controller
      */
     public function store(StoreCustomerInvoiceRequest $request)
     {
-        //
+        return $request;
     }
 
     /**

@@ -41,6 +41,8 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
+<form action="{{route('customerinvoices.store')}}" method="POST">
+    @csrf
 				<!-- row -->
 				<div class="row row-sm">
 					<div class="col-md-12 col-xl-12">
@@ -60,13 +62,18 @@
 										<div class="col-md">
 											<h6>المرسل اليه</h6>
 											<div class="billed-to">
-												<select class="form-control">
+												<select class="form-control" name="customer">
 													<option>أختار عميل</option>
-													
-                                                    @foreach($customers as $customer)
-													    <option value="{{$customer->id}}">{{$customer->name}}</option>
-														@endforeach
+                                                @foreach($customers as $customer)
+                                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                @endforeach
 												</select>
+                                                <span class="text-danger">
+                                                    @error('customer')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
+                                                 </span>
 												<p>4033 Patterson Road, Staten Island, NY 10301<br>
 												Tel No: 324 445-4544<br>
 												Email: youremail@companyname.com</p>
@@ -74,13 +81,49 @@
 										</div>
 										<div class="col-md">
 											<label class="tx-gray-600">معلومات الفاتورة</label>
-											<p class="invoice-info-row"><span>رقم الفاتورة</span> <span><input type="number" class="form-control"></span></p>
-											<p class="invoice-info-row"><span>تاريخ الاصدار</span> <span><input type="date" class="form-control" value=""></span></p>
-											<p class="invoice-info-row"><span>عدد القطع</span> <span><input type="number" class="form-control"></span></p>
+											<p class="invoice-info-row"><span>رقم الفاتورة</span> <span>
+                                                <input type="number" name="invoice_number" class="form-control">
+                                                <span class="text-danger">
+                                               @error('invoice_number')
+                                                   <span>{{$message}}
+                                                </span>
+                                               @enderror 
+                                            </span>
+                                        </p>
+											<p class="invoice-info-row"><span>تاريخ الاصدار</span> <span>
+                                                <input type="date" name="date" class="form-control">
+                                                <span class="text-danger">
+                                                    @error('date')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
+                                                 </span>
+                                            </span></p>
+											<p class="invoice-info-row"><span>عدد القطع</span> <span>
+                                                <input type="number" id="n_o_pieces" name="n_o_pieces" class="form-control" readonly>
+                                                <span class="text-danger">
+                                                    @error('n_o_pieces')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
+                                                 </span>
+                                            </span></p>
+
+											<p class="invoice-info-row"><span>الخصم للقطعة </span> <span>
+                                                <input type="number" id="sale_per_piece" name="n_o_pieces" class="form-control">
+                                                <span class="text-danger">
+                                                    @error('n_o_pieces')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
+                                                 </span>
+                                            </span></p>
+
+
 										</div>
 									</div>
 									<div class="table-responsive mg-t-40">
-										<table class="table table-invoice border text-md-nowrap mb-0">
+										<table class="table table-invoice border text-md-nowrap mb-0 invoice_details">
 											<thead>
 												<tr>
 													<th class="wd-10p">#</th>
@@ -93,9 +136,11 @@
 											<tbody>
 												<tr>
 													<td>1</td>
-													<td class="tx-12"><input type="number" class="form-control"></td>
+													<td class="tx-12">
+														<input type="number" name="quantity" id="quantity" class="form-control quantity">
+													</td>
 													<td class="tx-right">
-														<select class="form-control">
+														<select class="form-control"  id="product" name="product[]">
 															<option>اختر موديل</option>
 															@foreach($products as $product)
 															<option value="{{$product->id}}">{{$product->product_name}}</option>
@@ -103,56 +148,50 @@
 
 														</select>
 													</td>
-													<td class="tx-center"><input type="text" class="form-control"></td>
-													<td class="tx-right"><input type="number" class="form-control"></td>
-				
-													<td class="tx-right"><button  class="btn btn-primary">اضافة</td>
-														<td class="tx-right"><button  class="btn btn-danger">حذف</td>
-
-												</tr>
-
-												<tr>
-													<td>1</td>
-													<td class="tx-12"><input type="number" class="form-control"></td>
-													<td class="tx-right">
-														<select class="form-control">
-															<option>اختر موديل</option>
-															@foreach($products as $product)
-															<option value="{{$product->id}}">{{$product->product_name}}</option>
-															@endforeach
-
-														</select>
+													<td class="tx-center">
+														<input type="number" step="5" id="price" name="price[]" class="form-control price">
 													</td>
-													<td class="tx-center"><input type="text" class="form-control"></td>
-													<td class="tx-right"><input type="number" class="form-control"></td>
+													<td class="tx-right">
+														<input type="number" step="5" id="row_sub_total" name="row_sub_total[]" class="form-control row_sub_total" readonly>
+													</td>
 				
-													<td class="tx-right"><button  class="btn btn-primary">اضافة</td>
+													{{-- <td class="tx-right"><button  class="btn btn-primary">اضافة</td> --}}
 														<td class="tx-right"><button  class="btn btn-danger">حذف</td>
-												</tr>
 
+												</tr>
+<tr>
+	<td colspan="5">
+</td>
+	<td colspan="">
+			<button  class="btn btn-primary">اضافة منتج</button>
+	</td>
+</tr>
+											
 
 												<tr>
-													<td class="valign-middle" colspan="2" rowspan="4">
+													<td class="valign-middle" colspan="3" rowspan="4">
 														<div class="invoice-notes">
 															<label class="main-content-label tx-13">Notes</label>
 															<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 														</div><!-- invoice-notes -->
 													</td>
 													<td class="tx-right">Sub-Total</td>
-													<td class="tx-right" colspan="2">$5,750.00</td>
+													<td class="tx-right sub_total"  colspan="2">
+														<input type="number" id="sub_total" class="form-control" readonly></td>
 												</tr>
 												<tr>
-													<td class="tx-right">Tax (5%)</td>
-													<td class="tx-right" colspan="2">$287.50</td>
+													<td class="tx-right">sale</td>
+													<td class="tx-right sub_total"  colspan="2">
+														<input type="number" id="sale_amount" class="form-control" readonly></td>
 												</tr>
 												<tr>
 													<td class="tx-right">Discount</td>
-													<td class="tx-right" colspan="2">-$50.00</td>
+													<td class="tx-right" colspan="2"><input type="number" id="discount" class="form-control"></td>
 												</tr>
 												<tr>
 													<td class="tx-right tx-uppercase tx-bold tx-inverse">Total Due</td>
 													<td class="tx-right" colspan="2">
-														<h4 class="tx-primary tx-bold">$5,987.50</h4>
+														<input type="number" id="total_due" class="form-control" readonly>
 													</td>
 												</tr>
 											</tbody>
@@ -168,18 +207,84 @@
 									<a href="#" class="btn btn-success float-left mt-3">
 										<i class="mdi mdi-telegram ml-1"></i>Send Invoice
 									</a>
+                                    <button class="btn btn-primary" type="submit">add</button>
 								</div>
 							</div>
 						</div>
 					</div><!-- COL-END -->
 				</div>
 				<!-- row closed -->
+      </form>
 			</div>
 			<!-- Container closed -->
 		</div>
 		<!-- main-content closed -->
 @endsection
 @section('js')
+<script>
+	$(document).ready(function() {
+		$('.main-content-body-invoice').on('keyup blur' ,'#sale_per_piece' ,  function(){
+			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
+			var quantities = sum_total('.quantity') || 0 ;
+			var sale_for_pieces = sale_per_piece * quantities;
+
+			$('#sale_amount').val(sale_for_pieces);
+
+
+		});
+
+				$('.main-content-body-invoice').on('keyup blur' ,'#discount' ,  function(){
+			var quantities = sum_total('.quantity') || 0 ;
+			$('#sale_amount').val(sale_amount * quantities);
+		});
+
+		var sale_per_piece = $('#sale_per_piece').val() || 0;
+        $('.invoice_details').on('keyup blur' , '.quantity' , function(){
+			var row = $(this).closest('tr');
+			var quantity = row.find('.quantity').val() || 0;
+			var price = row.find('.price').val() || 0;
+			var partial_amount = quantity * price;
+			row.find('.row_sub_total').val((partial_amount).toFixed(0));
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total'));
+				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
+
+
+			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
+			var quantities = sum_total('.quantity') || 0 ;
+			$('#sale_amount').val(sale_per_piece * quantities);
+
+
+		});
+
+		$('.invoice_details').on('keyup blur' , '.price' , function(){
+			var row = $(this).closest('tr');
+			var quantity = row.find('.quantity').val() || 0;
+			var price = row.find('.price').val() || 0;
+			var partial_amount = quantity * price;
+			row.find('.row_sub_total').val((partial_amount).toFixed(0));
+			$('#sub_total').val(sum_total('.row_sub_total'));
+			$('#n_o_pieces').val(sum_total('.quantity'));
+			$('#sale').val(quantity * 5);
+
+			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
+			var quantities = sum_total('.quantity') || 0 ;
+			$('#sale_amount').val(sale_per_piece * quantities);
+		});
+
+		let sum_total = function ($selector){
+			let total = 0;
+            $($selector).each(function(){
+				let selecVal = $(this).val() != '' ? $(this).val() : 0;
+                total += parseFloat(selecVal);
+            });
+            return total;
+        }
+		
+
+		
+
+    });
+</script>
 <!--Internal  Chart.bundle js -->
 <script src="{{URL::asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
 @endsection
