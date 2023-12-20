@@ -18,31 +18,29 @@ class CustomerInvoiceSeeder extends Seeder
             [
                 [
                     'invoice_number' => 1001,
-                    'cumtomer_id' => 2,
+                    'customer_id' => 2,
                     'n_o_pieces' => 100,
                     'n_o_models' => 2,
                     'date' => '2021-01-01',
                     'recipient' => 'ahmed',
                     'sale_per_piece' => 5,
-                    'invoice_sale' => 0,
-                    'invoice_image' => 'url',
-                    'comment' => 'comment',
-                    'partial_amount' => 5400,
-                    'total_amount' => 5000
+                    'sale_amount' => 0,
+                    'discount' => 100,
+                    'sub_total' => 100,
+                    'total_due' => 5000
                 ],
                 [
                     'invoice_number' => 1002,
-                    'cumtomer_id' => 1,
+                    'customer_id' => 1,
                     'n_o_pieces' => 50,
                     'n_o_models' => 1,
                     'date' => '2021-01-01',
                     'recipient' => 'saad',
-                    'sale_per_piece' => 0,
-                    'invoice_sale' => 0,
-                    'invoice_image' => 'url',
-                    'comment' => 'comment',
-                    'partial_amount' => 6000,
-                    'total_amount' => 6000
+                    'sale_per_piece' => 5,
+                    'sale_amount' => 0,
+                    'discount' => 100,
+                    'sub_total' => 100,
+                    'total_due' => 5000
                 ]
             ]
         );

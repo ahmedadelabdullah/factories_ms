@@ -28,6 +28,12 @@ class StoreCustomerInvoiceRequest extends FormRequest
             'date' => 'required',
             'n_o_pieces' => 'required',
             'customer' => 'required',
+
+            'quantity' => 'required|array',
+            'quantity.*' => 'required',
+
+            'price' => 'required|array',
+            'price.*' => 'required',
         ];
     }
 }

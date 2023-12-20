@@ -61,13 +61,13 @@
 												<td>{{$i}}</td>
 												<td>{{$customer_invoice->invoice_number}}</td>
 												{{-- <td>{{$user->user_name}}</td> --}}
-												<td>{{$customer_invoice->cumtomer_id}}</td>
+												<td>{{$customer_invoice->customer->name}}</td>
 												
 												<td>{{$customer_invoice->n_o_pieces}}</td>
 												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
 												<td>{{$customer_invoice->date}}</td>
 									
-												<td>{{$customer_invoice->total_amount}}</td>
+												<td>{{$customer_invoice->total_due}}</td>
 												
 												<td>
 													<a class="modal-effect btn btn-primary user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">تفاصيل</a>

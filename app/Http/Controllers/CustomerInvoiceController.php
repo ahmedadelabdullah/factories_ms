@@ -42,7 +42,32 @@ class CustomerInvoiceController extends Controller
      */
     public function store(StoreCustomerInvoiceRequest $request)
     {
-        return $request;
+        // return $request;
+        $data = [];
+        $data['customer_id'] = $request->customer;
+        $data['invoice_number'] = $request->invoice_number;
+        $data['date'] = $request->date_submit;
+        $data['n_o_pieces'] = $request->n_o_pieces;
+        $data['sale_per_piece'] = $request->sale_per_piece;
+        $data['n_o_models'] = $request->n_o_models;
+        $data['recipient'] = $request->recipient;
+        $data['sub_total'] = $request->sub_total;
+        $data['sale_amount'] = $request->sale_amount;
+        $data['discount'] = $request->discount;
+        $data['total_due'] = $request->total_due;
+               $invoice =  CustomerInvoice::create($data);
+
+        $details_list = [];
+
+        for($i=0 ; $i<count($request->product_name) ; $i++)
+        {
+            $details_list[$i]['product_name'] = $request->product_name[$i];
+            $details_list[$i]['quantity'] = $request->quantity[$i];
+            $details_list[$i]['price'] = $request->price[$i];
+            $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
+        }
+       $details =  $invoice->details()->createMany($details_list);
+       return redirect()->route('customerinvoices.index');
     }
 
     /**

@@ -1,5 +1,14 @@
 @extends('layouts.master')
 @section('css')
+<link rel="stylesheet" href="{{asset('assets/css/pickadate/classic.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/pickadate/classic.date.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/pickadate/classic.time.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/pickadate/rtl.css')}}">
+<style>
+	.picker--opened{
+		left: 0;
+	}
+	</style>
 @endsection
 @section('title')
  برنامج المنظومة || 	فاتورة جديدة   
@@ -91,7 +100,7 @@
                                             </span>
                                         </p>
 											<p class="invoice-info-row"><span>تاريخ الاصدار</span> <span>
-                                                <input type="date" name="date" class="form-control">
+                                                <input type="date" name="date" class="form-control pickadate">
                                                 <span class="text-danger">
                                                     @error('date')
                                                         <span>{{$message}}
@@ -110,7 +119,7 @@
                                             </span></p>
 
 											<p class="invoice-info-row"><span>الخصم للقطعة </span> <span>
-                                                <input type="number" id="sale_per_piece" name="n_o_pieces" class="form-control">
+                                                <input type="number" id="sale_per_piece" name="sale_per_piece" class="form-control">
                                                 <span class="text-danger">
                                                     @error('n_o_pieces')
                                                         <span>{{$message}}
@@ -134,68 +143,80 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
+												<tr class="cloning-row" id="0">
 													<td>1</td>
 													<td class="tx-12">
-														<input type="number" name="quantity" id="quantity" class="form-control quantity">
+														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
+														@error('quantity')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product[]">
-															<option>اختر موديل</option>
-															@foreach($products as $product)
-															<option value="{{$product->id}}">{{$product->product_name}}</option>
-															@endforeach
-
+														<select class="form-control"  id="product" name="product_name[]">
+														<option>اختر موديل</option>
+														@foreach($products as $product)
+														<option value="{{$product->id}}">{{$product->product_name}}</option>
+														@endforeach
 														</select>
+																												@error('quantity')
+                                                        <span>{{$message}}
+                                                     </span>
+                                                    @enderror 
 													</td>
 													<td class="tx-center">
-														<input type="number" step="5" id="price" name="price[]" class="form-control price">
+														<input type="number"  id="price" name="price[]" class="form-control price">
+														@error('price')
+														<span>{{$message}}</span>
+                                                        @enderror
 													</td>
 													<td class="tx-right">
 														<input type="number" step="5" id="row_sub_total" name="row_sub_total[]" class="form-control row_sub_total" readonly>
 													</td>
-				
-													{{-- <td class="tx-right"><button  class="btn btn-primary">اضافة</td> --}}
-														<td class="tx-right"><button  class="btn btn-danger">حذف</td>
 
-												</tr>
-<tr>
-	<td colspan="5">
-</td>
-	<td colspan="">
-			<button  class="btn btn-primary">اضافة منتج</button>
-	</td>
-</tr>
-											
-
-												<tr>
-													<td class="valign-middle" colspan="3" rowspan="4">
-														<div class="invoice-notes">
-															<label class="main-content-label tx-13">Notes</label>
-															<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-														</div><!-- invoice-notes -->
-													</td>
-													<td class="tx-right">Sub-Total</td>
-													<td class="tx-right sub_total"  colspan="2">
-														<input type="number" id="sub_total" class="form-control" readonly></td>
-												</tr>
-												<tr>
-													<td class="tx-right">sale</td>
-													<td class="tx-right sub_total"  colspan="2">
-														<input type="number" id="sale_amount" class="form-control" readonly></td>
-												</tr>
-												<tr>
-													<td class="tx-right">Discount</td>
-													<td class="tx-right" colspan="2"><input type="number" id="discount" class="form-control"></td>
-												</tr>
-												<tr>
-													<td class="tx-right tx-uppercase tx-bold tx-inverse">Total Due</td>
-													<td class="tx-right" colspan="2">
-														<input type="number" id="total_due" class="form-control" readonly>
-													</td>
+													<td class="tx-right"><button  class="btn btn-danger">حذف</td>
 												</tr>
 											</tbody>
-										</table>
+											<tfoot>		
+												<tr>
+													<td colspan="5">
+												</td>
+													<td colspan="">
+															<button  class="btn btn-primary add_btn" type="button">اضافة منتج</button>
+													</td>
+												</tr>		
+
+				<tr>
+					<td class="valign-middle" colspan="3" rowspan="4">
+						<div class="invoice-notes">
+							<label class="main-content-label tx-13">Notes</label>
+						</div><!-- invoice-notes -->
+					</td>
+					<td class="tx-right">Sub-Total</td>
+					<td class="tx-right sub_total"  colspan="2">
+						{{-- سعر الفاتورة قبل الخصم --}}
+						<input type="number" name="sub_total" id="sub_total" class="form-control" readonly></td>
+				</tr>
+				<tr>
+					<td class="tx-right">sale</td>
+					<td class="tx-right sub_total"  colspan="2">
+{{--  الخصم وهو حاصل ضرب عدد القطع فى مبلغ الخصم للوحدة --}}
+						<input type="number" id="sale_amount" name="sale_amount" class="form-control" readonly></td>
+				</tr>
+				<tr>
+					<td class="tx-right">Discount</td>
+					{{-- الخصم لو وجد خصم عام على الفاتورة --}}
+					<td class="tx-right" colspan="2"><input type="number" name="discount" id="discount" class="form-control"></td>
+				</tr>
+				<tr>
+					<td class="tx-right tx-uppercase tx-bold tx-inverse">Total Due</td>
+					<td class="tx-right" colspan="2">
+						{{-- المبلغ المستحق --}}
+						<input type="number" name="total_due" id="total_due" class="form-control" readonly>
+					</td>
+				</tr>
+											</tfoot>
+		</table>
 									</div>
 									<hr class="mg-b-40">
 									<a class="btn btn-purple float-left mt-3 mr-2" href="">
@@ -207,7 +228,8 @@
 									<a href="#" class="btn btn-success float-left mt-3">
 										<i class="mdi mdi-telegram ml-1"></i>Send Invoice
 									</a>
-                                    <button class="btn btn-primary" type="submit">add</button>
+                                    <button class="btn btn-primary" type="submit">حفظ الفاتورة</button>
+									
 								</div>
 							</div>
 						</div>
@@ -221,37 +243,70 @@
 		<!-- main-content closed -->
 @endsection
 @section('js')
+{{-- <script src="{{URL::asset('assets/js/pickadate/picker.date.js')}}"></script> --}}
+<script src="{{asset('assets/js/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/pickadate/ar.js')}}"></script>
+
+
 <script>
 	$(document).ready(function() {
+		$('.pickadate').pickadate({
+			format: 'yyyy-mm-dd',
+			max: 1,
+			disable: [
+    1
+  ],
+
+		});
+
 		$('.main-content-body-invoice').on('keyup blur' ,'#sale_per_piece' ,  function(){
+			var row = $(this).closest('tr');
+			var quantity = row.find('.quantity').val() || 0;
+			var price = row.find('.price').val() || 0;
+			var partial_amount = quantity * price;
+			row.find('.row_sub_total').val((partial_amount).toFixed(0));
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total')).val();
+				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
+			var discount = $('#discount').val() || 0 ;
+
 			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
 			var quantities = sum_total('.quantity') || 0 ;
-			var sale_for_pieces = sale_per_piece * quantities;
-
-			$('#sale_amount').val(sale_for_pieces);
-
-
+			var sale_amount = $('#sale_amount').val(sale_per_piece * quantities).val();
+			$('#total_due').val(sub_total - sale_amount - discount);
 		});
 
-				$('.main-content-body-invoice').on('keyup blur' ,'#discount' ,  function(){
+		$('.main-content-body-invoice').on('keyup blur' ,'#discount' ,  function(){
+			var row = $(this).closest('tr');
+			var quantity = row.find('.quantity').val() || 0;
+			var price = row.find('.price').val() || 0;
+			var partial_amount = quantity * price;
+			row.find('.row_sub_total').val((partial_amount).toFixed(0));
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total')).val();
+				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
+			var discount = $('#discount').val() || 0 ;
+
+			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
 			var quantities = sum_total('.quantity') || 0 ;
-			$('#sale_amount').val(sale_amount * quantities);
+			var sale_amount = $('#sale_amount').val(sale_per_piece * quantities).val();
+			$('#total_due').val(sub_total - sale_amount - discount);
 		});
 
-		var sale_per_piece = $('#sale_per_piece').val() || 0;
         $('.invoice_details').on('keyup blur' , '.quantity' , function(){
 			var row = $(this).closest('tr');
 			var quantity = row.find('.quantity').val() || 0;
 			var price = row.find('.price').val() || 0;
 			var partial_amount = quantity * price;
 			row.find('.row_sub_total').val((partial_amount).toFixed(0));
-				var sub_total = $('#sub_total').val(sum_total('.row_sub_total'));
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total')).val();
 				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
 
+				var discount = $('#discount').val() || 0 ;
 
 			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
 			var quantities = sum_total('.quantity') || 0 ;
-			$('#sale_amount').val(sale_per_piece * quantities);
+			var sale_amount = $('#sale_amount').val(sale_per_piece * quantities).val();
+						$('#total_due').val(sub_total - sale_amount - discount);
 
 
 		});
@@ -262,13 +317,15 @@
 			var price = row.find('.price').val() || 0;
 			var partial_amount = quantity * price;
 			row.find('.row_sub_total').val((partial_amount).toFixed(0));
-			$('#sub_total').val(sum_total('.row_sub_total'));
-			$('#n_o_pieces').val(sum_total('.quantity'));
-			$('#sale').val(quantity * 5);
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total')).val();
+				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
+
+				var discount = $('#discount').val() || 0 ;
 
 			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
 			var quantities = sum_total('.quantity') || 0 ;
-			$('#sale_amount').val(sale_per_piece * quantities);
+			var sale_amount = $('#sale_amount').val(sale_per_piece * quantities).val();
+						$('#total_due').val(sub_total - sale_amount - discount);
 		});
 
 		let sum_total = function ($selector){
@@ -279,10 +336,61 @@
             });
             return total;
         }
-		
 
-		
+		$(document).on('click' , '.add_btn' , function(){
+			var trCount = $('.invoice_details').find('tr.cloning-row:last').length;
+			var numberIncrement = trCount > 0 ? parseInt($('.invoice_details').find('tr.cloning-row:last').attr('id')) + 1 : 0;
+			
+			$('.invoice_details').find('tbody').append(`
+			
+			<tr class="cloning-row" id="` + numberIncrement +`">
+													<td>` + (numberIncrement+1) + `</td>
+													<td class="tx-12">
+														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
+													</td>
+													<td class="tx-right">
+														<select class="form-control"  id="product" name="product_name[]">
+														<option>اختر موديل</option>
+														@foreach($products as $product)
+														<option value="{{$product->id}}">{{$product->product_name}}</option>
+														@endforeach
 
+														</select>
+													</td>
+													<td class="tx-center">
+														<input type="number" step="5" id="price" name="price[]" class="form-control price">
+													</td>
+													<td class="tx-right">
+														<input type="number" step="5" id="row_sub_total" name="row_sub_total[]" class="form-control row_sub_total" readonly>
+													</td>
+
+													<td class="tx-right"><button  class="btn btn-danger delete-row">حذف</td>
+												</tr>
+			`);
+		});
+
+		$('.invoice_details').on('click' , '.delete-row' , function(e){
+
+e.preventDefault();
+$(this).parent().parent().remove();
+
+
+
+			var row = $(this).closest('tr');
+			var quantity = row.find('.quantity').val() || 0;
+			var price = row.find('.price').val() || 0;
+			var partial_amount = quantity * price;
+			row.find('.row_sub_total').val((partial_amount).toFixed(0));
+				var sub_total = $('#sub_total').val(sum_total('.row_sub_total')).val();
+				var n_o_pieces = $('#n_o_pieces').val(sum_total('.quantity'));
+
+				var discount = $('#discount').val() || 0 ;
+
+			var sale_per_piece = $('#sale_per_piece').val() || 0 ;
+			var quantities = sum_total('.quantity') || 0 ;
+			var sale_amount = $('#sale_amount').val(sale_per_piece * quantities).val();
+						$('#total_due').val(sub_total - sale_amount - discount);
+		});
     });
 </script>
 <!--Internal  Chart.bundle js -->

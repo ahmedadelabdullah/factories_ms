@@ -50,6 +50,8 @@ class AdminController extends Controller
         $data['role'] = 'admin';
         $data['password'] = Hash::make(123);
 
+     
+
         $user = User::create($data);
         return redirect()->route('admin.admins.index')->with('adding', 'تم اضافة العنصر بنجاح');
     }

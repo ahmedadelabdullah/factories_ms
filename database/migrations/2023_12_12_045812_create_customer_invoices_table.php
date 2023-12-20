@@ -16,18 +16,17 @@ return new class extends Migration
         Schema::create('customer_invoices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('invoice_number');
-            $table->unsignedBigInteger('cumtomer_id');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedInteger('n_o_pieces');
-            $table->unsignedInteger('n_o_models');
+            $table->unsignedInteger('n_o_models')->nullable();
             $table->date('date');
-            $table->string('recipient');
-            $table->string('sale_per_piece');
-            $table->integer('invoice_sale')->default(0);
-            $table->string('invoice_image')->nullable();
-            $table->text('comment')->nullable();
-            $table->unsignedBigInteger('partial_amount')->nullable();
-            $table->unsignedBigInteger('total_amount')->nullable();
-            $table->string('amount')->nullable();
+            $table->string('recipient')->nullable();
+            $table->unsignedInteger('sale_per_piece')->nullable();
+            $table->unsignedInteger('sale_amount')->default(0);
+            $table->unsignedInteger('discount')->nullable();
+            $table->unsignedInteger('comment')->nullable();
+            $table->unsignedBigInteger('sub_total');
+            $table->unsignedBigInteger('total_due')->default(0);
             
 
             $table->timestamps();

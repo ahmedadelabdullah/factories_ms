@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerInvoiceDetail extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+    public function customer_invoice(){
+        return $this->belongsTo(CustomerInvoice::class);
+    }
 }

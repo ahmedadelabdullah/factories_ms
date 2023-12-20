@@ -16,10 +16,13 @@ return new class extends Migration
         Schema::create('customer_invoice_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_invoice_id');
-            $table->unsignedBigInteger('product_id');
-            $table->string('quantity');
-            $table->string('price');
+            $table->string('product_name');
+            $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('quantity');
+            $table->unsignedBigInteger('row_sub_total');
             $table->timestamps();
+
+            $table->foreign('customer_invoice_id')->references('id')->on('customer_invoices');
         });
     }
 
