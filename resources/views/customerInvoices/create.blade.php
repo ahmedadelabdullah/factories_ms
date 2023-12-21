@@ -153,7 +153,7 @@
                                                     @enderror 
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product_name[]">
+														<select class="form-control"  id="product" name="product_id[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
 														<option value="{{$product->id}}">{{$product->product_name}}</option>
@@ -349,7 +349,7 @@
 														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product_name[]">
+														<select class="form-control"  id="product" name="product_id[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
 														<option value="{{$product->id}}">{{$product->product_name}}</option>

@@ -16,7 +16,7 @@ class CustomerInvoiceController extends Controller
      */
     public function index()
     {
-        $customer_invoices = CustomerInvoice::all();
+        $customer_invoices = CustomerInvoice::orderBy('id', 'desc')->get();
         return view('customerInvoices.index' , compact('customer_invoices'));
         
     }
@@ -58,10 +58,10 @@ class CustomerInvoiceController extends Controller
                $invoice =  CustomerInvoice::create($data);
 
         $details_list = [];
-
-        for($i=0 ; $i<count($request->product_name) ; $i++)
+// dd($request->product_id);
+        for($i=0 ; $i<count($request->product_id) ; $i++)
         {
-            $details_list[$i]['product_name'] = $request->product_name[$i];
+            $details_list[$i]['product_id'] = $request->product_id[$i];
             $details_list[$i]['quantity'] = $request->quantity[$i];
             $details_list[$i]['price'] = $request->price[$i];
             $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
@@ -87,9 +87,13 @@ class CustomerInvoiceController extends Controller
      * @param  \App\Models\CustomerInvoice  $customerInvoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(CustomerInvoice $customerInvoice)
+    public function edit($id)
     {
-        //
+        
+        $customers = Customer::all();
+        $products = Product::all();
+                $invoice = CustomerInvoice::find($id);
+        return view('customerInvoices.edit' , compact('customers' , 'products' , 'invoice'));
     }
 
     /**
@@ -99,9 +103,34 @@ class CustomerInvoiceController extends Controller
      * @param  \App\Models\CustomerInvoice  $customerInvoice
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerInvoiceRequest $request, CustomerInvoice $customerInvoice)
+    public function update(UpdateCustomerInvoiceRequest $request, $id)
     {
-        //
+        // return $request;
+        $invoice = CustomerInvoice::findOrFail($id);
+
+        $data['customer_id'] = $request->customer;
+        $data['invoice_number'] = $request->invoice_number;
+        $data['date'] = $request->date_submit;
+        $data['n_o_pieces'] = $request->n_o_pieces;
+        $data['sale_per_piece'] = $request->sale_per_piece;
+        $data['n_o_models'] = $request->n_o_models;
+        $data['recipient'] = $request->recipient;
+        $data['sub_total'] = $request->sub_total;
+        $data['sale_amount'] = $request->sale_amount;
+        $data['discount'] = $request->discount;
+        $data['total_due'] = $request->total_due;
+               $invoice->update($data);
+               $invoice->details()->delete();
+        $details_list = [];
+        for($i=0 ; $i<count($request->product_id) ; $i++)
+        {
+            $details_list[$i]['product_id'] = $request->product_id[$i];
+            $details_list[$i]['quantity'] = $request->quantity[$i];
+            $details_list[$i]['price'] = $request->price[$i];
+            $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
+        }
+       $details =  $invoice->details()->createMany($details_list);
+       return redirect()->route('customerinvoices.index');
     }
 
     /**

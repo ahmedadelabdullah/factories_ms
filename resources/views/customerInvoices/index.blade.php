@@ -72,17 +72,7 @@
 												<td>
 													<a class="modal-effect btn btn-primary user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">تفاصيل</a>
 
-													<a class="modal-effect btn btn-primary user-dialog" 
-													data-id="{{$customer_invoice->id}}" 
-													data-name="{{$customer_invoice->name}}" 
-													data-phone="{{$customer_invoice->phone}}"  
-													data-email="{{$customer_invoice->email}}" 
-													data-com_code="{{$customer_invoice->com_code}}"
-													data-address="{{$customer_invoice->address}}"
-													data-role="{{$customer_invoice->role}}"
-													data-user_name="{{$customer_invoice->user_name}}"
-													
-													data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">تعديل</a>
+													<a class="btn btn-primary text-white" href="{{route('customerinvoices.edit' , $customer_invoice->id)}}">تعديل</a>
 													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
 
 												</td>
