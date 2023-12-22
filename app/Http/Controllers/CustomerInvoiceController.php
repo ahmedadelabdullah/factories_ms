@@ -59,9 +59,9 @@ class CustomerInvoiceController extends Controller
 
         $details_list = [];
 // dd($request->product_id);
-        for($i=0 ; $i<count($request->product_id) ; $i++)
+        for($i=0 ; $i<count($request->product_name) ; $i++)
         {
-            $details_list[$i]['product_id'] = $request->product_id[$i];
+            $details_list[$i]['product_name'] = $request->product_name[$i];
             $details_list[$i]['quantity'] = $request->quantity[$i];
             $details_list[$i]['price'] = $request->price[$i];
             $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
@@ -76,9 +76,10 @@ class CustomerInvoiceController extends Controller
      * @param  \App\Models\CustomerInvoice  $customerInvoice
      * @return \Illuminate\Http\Response
      */
-    public function show(CustomerInvoice $customerInvoice)
+    public function show($id)
     {
-        //
+        $customerInvoice = CustomerInvoice::findOrFail($id);
+        return view('customerInvoices.show', compact('customerInvoice'));
     }
 
     /**
@@ -122,9 +123,9 @@ class CustomerInvoiceController extends Controller
                $invoice->update($data);
                $invoice->details()->delete();
         $details_list = [];
-        for($i=0 ; $i<count($request->product_id) ; $i++)
+        for($i=0 ; $i<count($request->product_name) ; $i++)
         {
-            $details_list[$i]['product_id'] = $request->product_id[$i];
+            $details_list[$i]['product_name'] = $request->product_name[$i];
             $details_list[$i]['quantity'] = $request->quantity[$i];
             $details_list[$i]['price'] = $request->price[$i];
             $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];

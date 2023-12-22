@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('customer_invoice_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_invoice_id');
-            $table->string('product_id');
+            $table->string('product_name');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('row_sub_total');

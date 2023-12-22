@@ -153,10 +153,10 @@
                                                     @enderror 
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product_id[]">
+														<select class="form-control"  id="product" name="product_name[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
-														<option value="{{$product->id}}">{{$product->product_name}}</option>
+														<option value="{{$product->product_name}}">{{$product->product_name}}</option>
 														@endforeach
 														</select>
 																												@error('quantity')
@@ -349,10 +349,10 @@
 														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product_id[]">
+														<select class="form-control"  id="product" name="product_name[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
-														<option value="{{$product->id}}">{{$product->product_name}}</option>
+														<option value="{{$product->product_name}}">{{$product->product_name}}</option>
 														@endforeach
 
 														</select>
