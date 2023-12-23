@@ -7,6 +7,8 @@ use App\Http\Requests\StoreCustomerInvoiceRequest;
 use App\Http\Requests\UpdateCustomerInvoiceRequest;
 use App\Models\Customer;
 use App\Models\Product;
+use PDF;
+
 class CustomerInvoiceController extends Controller
 {
     /**
@@ -44,7 +46,7 @@ class CustomerInvoiceController extends Controller
     {
         // return $request;
         $data = [];
-        $data['customer_id'] = $request->customer;
+        $data['customer_id'] = $request->customer_id;
         $data['invoice_number'] = $request->invoice_number;
         $data['date'] = $request->date_submit;
         $data['n_o_pieces'] = $request->n_o_pieces;
@@ -140,8 +142,55 @@ class CustomerInvoiceController extends Controller
      * @param  \App\Models\CustomerInvoice  $customerInvoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CustomerInvoice $customerInvoice)
+    public function destroy($id)
     {
-        //
+    
+        $invoice = CustomerInvoice::findOrFail($id);
+        
+        $invoice->delete();
+        return redirect()->route('customerinvoices.index');
+    }
+
+
+    public function print($id)
+    {
+        $customerInvoice = CustomerInvoice::findOrFail($id);
+        return view('customerInvoices.print', compact('customerInvoice'));
+        
+    }
+
+    public function pdf($id)
+    {
+        $customerInvoice = CustomerInvoice::findOrFail($id);
+// return $customerInvoice;
+
+        $items = [];
+        foreach($customerInvoice->details()->get() as $detail){
+        $items[] = [
+            'product_name' => $customerInvoice->product_name,
+            'quantity' => $customerInvoice->quantity,
+            'price' => $customerInvoice->price,
+            'row_sub_total' => $customerInvoice->row_sub_total,
+        ];
+    } 
+
+        $data['items'] = $items;
+        $data['customer_id'] = $customerInvoice->customer_id;
+
+        $data['invoice_number'] = $customerInvoice->invoice_number;
+        $data['date'] = $customerInvoice->date_submit;
+        $data['n_o_pieces'] = $customerInvoice->n_o_pieces;
+        $data['sale_per_piece'] = $customerInvoice->sale_per_piece;
+        $data['n_o_models'] = $customerInvoice->n_o_models;
+        $data['recipient'] = $customerInvoice->recipient;
+        $data['sub_total'] = $customerInvoice->sub_total;
+        $data['sale_amount'] = $customerInvoice->sale_amount;
+        $data['discount'] = $customerInvoice->discount;
+        $data['total_due'] = $customerInvoice->total_due;
+
+        $pdf = PDF::loadView('customerinvoices.pdf', $data);
+
+        return $pdf->stream($customerInvoice->invoice_number.'.pdf');    
+        // return $pdf->download($customerInvoice->customer.'.pdf');    
     }
 }

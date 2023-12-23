@@ -34,6 +34,10 @@ Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->gro
     Route::resource('/admins', AdminController::class);
 });
 // End Admins Routes
+Route::get('invoice/print/{id}', [CustomerInvoiceController::class , 'print']);
+Route::get('invoice/pdf/{id}', [CustomerInvoiceController::class , 'pdf']);
+Route::view('test', 'invoice');
+
 
 Route::resource('/customerinvoices', CustomerInvoiceController::class);
 Route::resource('/products', ProductController::class);

@@ -17,13 +17,13 @@ class ProductSeeder extends Seeder
     {
         Product::insert(
             [      [
-                'product_name' => 'product 1',
+                'product_name' => 'منتج 1',
                 'product_price' => '100',
                 'product_code' => 1001
                 
             ],
             [
-                'product_name' => 'product 2',
+                'product_name' => 'منتج 2',
                 'product_price' => '200',
                 'product_code' => 1002
             ],

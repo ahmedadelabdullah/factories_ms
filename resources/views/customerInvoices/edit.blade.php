@@ -11,7 +11,7 @@
 	</style>
 @endsection
 @section('title')
- برنامج المنظومة || 	فاتورة جديدة   
+ برنامج المنظومة || 	 تعديل فاتورة   
 @endsection
 @section('page-header')
 				<!-- breadcrumb -->
@@ -50,8 +50,9 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
-<form action="{{route('customerinvoices.store')}}" method="POST">
+<form action="{{route('customerinvoices.update' , $invoice->id)}}" method="POST">
     @csrf
+	@method('PATCH')
 				<!-- row -->
 				<div class="row row-sm">
 					<div class="col-md-12 col-xl-12">
@@ -71,14 +72,13 @@
 										<div class="col-md">
 											<h6>المرسل اليه</h6>
 											<div class="billed-to">
-												<select class="form-control" name="customer_id">
-													<option>أختار عميل</option>
+												<select class="form-control" name="customer">
                                                 @foreach($customers as $customer)
-                                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                    <option value="{{$customer->id}}" {{$customer->id == $invoice->customer_id ? 'selected' : '' }}>{{$customer->name}}</option>
                                                 @endforeach
 												</select>
                                                 <span class="text-danger">
-                                                    @error('customer_id')
+                                                    @error('customer')
                                                         <span>{{$message}}
                                                      </span>
                                                     @enderror 
@@ -91,7 +91,7 @@
 										<div class="col-md">
 											<label class="tx-gray-600">معلومات الفاتورة</label>
 											<p class="invoice-info-row"><span>رقم الفاتورة</span> <span>
-                                                <input type="number" name="invoice_number" class="form-control">
+                                                <input type="number" name="invoice_number" class="form-control" value="{{$invoice->invoice_number}}">
                                                 <span class="text-danger">
                                                @error('invoice_number')
                                                    <span>{{$message}}
@@ -100,7 +100,7 @@
                                             </span>
                                         </p>
 											<p class="invoice-info-row"><span>تاريخ الاصدار</span> <span>
-                                                <input type="date" name="date" class="form-control pickadate">
+                                                <input type="date" name="date" class="form-control pickadate" value="{{$invoice->date}}">
                                                 <span class="text-danger">
                                                     @error('date')
                                                         <span>{{$message}}
@@ -109,7 +109,7 @@
                                                  </span>
                                             </span></p>
 											<p class="invoice-info-row"><span>عدد القطع</span> <span>
-                                                <input type="number" id="n_o_pieces" name="n_o_pieces" class="form-control" readonly>
+                                                <input type="number" id="n_o_pieces" name="n_o_pieces" class="form-control" readonly value="{{$invoice->n_o_pieces}}">
                                                 <span class="text-danger">
                                                     @error('n_o_pieces')
                                                         <span>{{$message}}
@@ -119,7 +119,7 @@
                                             </span></p>
 
 											<p class="invoice-info-row"><span>الخصم للقطعة </span> <span>
-                                                <input type="number" id="sale_per_piece" name="sale_per_piece" class="form-control">
+                                                <input type="number" id="sale_per_piece" name="sale_per_piece" class="form-control" value="{{$invoice->sale_per_piece}}">
                                                 <span class="text-danger">
                                                     @error('n_o_pieces')
                                                         <span>{{$message}}
@@ -143,10 +143,11 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr class="cloning-row" id="0">
+												@foreach($invoice->details as $item)
+												<tr class="cloning-row" id={{$loop->index}}>
 													<td>1</td>
 													<td class="tx-12">
-														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
+														<input type="number" name="quantity[]" value="{{$item->quantity}}" id="quantity" class="form-control quantity">
 														@error('quantity')
                                                         <span>{{$message}}
                                                      </span>
@@ -156,26 +157,32 @@
 														<select class="form-control"  id="product" name="product_name[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
-														<option value="{{$product->product_name}}">{{$product->product_name}}</option>
+														<option value="{{$product->product_name}}" {{$item->product_id == $product->id ? 'selected' : ''}}>{{$product->product_name}}</option>
 														@endforeach
 														</select>
-																												@error('quantity')
+														@error('quantity')
                                                         <span>{{$message}}
                                                      </span>
                                                     @enderror 
 													</td>
 													<td class="tx-center">
-														<input type="number"  id="price" name="price[]" class="form-control price">
+														<input type="number"  id="price" name="price[]" value="{{$item->price}}" class="form-control price">
 														@error('price')
 														<span>{{$message}}</span>
                                                         @enderror
 													</td>
 													<td class="tx-right">
-														<input type="number" step="5" id="row_sub_total" name="row_sub_total[]" class="form-control row_sub_total" readonly>
+														<input type="number" value="{{$item->row_sub_total}}" id="row_sub_total" name="row_sub_total[]" class="form-control row_sub_total" readonly>
 													</td>
+													@if ($loop->index == 0)
+													<td class="tx-right"><button   class="btn btn-danger" disabled>حذف</button></td>
 
-													<td class="tx-right"><button  class="btn btn-danger">حذف</td>
+													@else
+													<td class="tx-right"><button  class="btn btn-danger delete-row">حذف</button></td>
+													
+													@endif
 												</tr>
+												@endforeach
 											</tbody>
 											<tfoot>		
 												<tr>
@@ -195,24 +202,24 @@
 					<td class="tx-right">Sub-Total</td>
 					<td class="tx-right sub_total"  colspan="2">
 						{{-- سعر الفاتورة قبل الخصم --}}
-						<input type="number" name="sub_total" id="sub_total" class="form-control" readonly></td>
+						<input type="number" name="sub_total" value="{{$invoice->sub_total}}"  id="sub_total" class="form-control" readonly></td>
 				</tr>
 				<tr>
 					<td class="tx-right">sale</td>
 					<td class="tx-right sub_total"  colspan="2">
 {{--  الخصم وهو حاصل ضرب عدد القطع فى مبلغ الخصم للوحدة --}}
-						<input type="number" id="sale_amount" name="sale_amount" class="form-control" readonly></td>
+						<input type="number" id="sale_amount" name="sale_amount" value="{{$invoice->sale_amount}}" class="form-control" readonly></td>
 				</tr>
 				<tr>
 					<td class="tx-right">Discount</td>
 					{{-- الخصم لو وجد خصم عام على الفاتورة --}}
-					<td class="tx-right" colspan="2"><input type="number" name="discount" id="discount" class="form-control"></td>
+					<td class="tx-right" colspan="2"><input type="number" name="discount" value="{{$invoice->discount}}" id="discount" class="form-control"></td>
 				</tr>
 				<tr>
 					<td class="tx-right tx-uppercase tx-bold tx-inverse">Total Due</td>
 					<td class="tx-right" colspan="2">
 						{{-- المبلغ المستحق --}}
-						<input type="number" name="total_due" id="total_due" class="form-control" readonly>
+						<input type="number" name="total_due"  value="{{$invoice->total_due}}" id="total_due" class="form-control" readonly>
 					</td>
 				</tr>
 											</tfoot>
@@ -349,10 +356,10 @@
 														<input type="number" name="quantity[]" id="quantity" class="form-control quantity">
 													</td>
 													<td class="tx-right">
-														<select class="form-control"  id="product" name="product_name[]">
+														<select class="form-control"  id="product" name="product_id[]">
 														<option>اختر موديل</option>
 														@foreach($products as $product)
-														<option value="{{$product->product_name}}">{{$product->product_name}}</option>
+														<option value="{{$product->id}}">{{$product->product_name}}</option>
 														@endforeach
 
 														</select>
@@ -369,7 +376,7 @@
 			`);
 		});
 
-		$('.invoice_details').on('click' , '.delete-row' , function(e){
+$('.invoice_details').on('click' , '.delete-row' , function(e){
 
 e.preventDefault();
 $(this).parent().parent().remove();

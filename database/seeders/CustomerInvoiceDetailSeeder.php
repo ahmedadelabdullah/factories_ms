@@ -14,6 +14,37 @@ class CustomerInvoiceDetailSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CustomerInvoiceDetail::insert(
+            [
+                [
+                    'customer_invoice_id' => 1,
+                    'product_name' => 'منتج 1',
+                    'price' => 300,
+                    'quantity' => 2,
+                    'row_sub_total' => '2021-01-01',
+                ],
+                [
+                    'customer_invoice_id' => 1,
+                    'product_name' => 'منتج 1',
+                    'price' => 300,
+                    'quantity' => 2,
+                    'row_sub_total' => '2021-01-01',
+                ],
+                [
+                    'customer_invoice_id' => 2,
+                    'product_name' => 'منتج 2',
+                    'price' => 300,
+                    'quantity' => 2,
+                    'row_sub_total' => '2021-01-01',
+                ],
+                [
+                    'customer_invoice_id' => 2,
+                    'product_name' => 'منتج 2',
+                    'price' => 300,
+                    'quantity' => 2,
+                    'row_sub_total' => '2021-01-01',
+                ],
+            ]
+        );
     }
 }

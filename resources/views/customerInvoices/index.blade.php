@@ -73,7 +73,11 @@
 													<a class="btn btn-primary text-white" href="{{route('customerinvoices.show' , $customer_invoice->id)}}">تفاصيل</a>
 
 													<a class="btn btn-primary text-white" href="{{route('customerinvoices.edit' , $customer_invoice->id)}}">تعديل</a>
-													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->name}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
+													<form  action="{{route('customerinvoices.destroy' , $customer_invoice->id)}}" method="POST" style="display: inline-block">
+														@csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger" type="submit">حذف</button>
+													</form>
 
 												</td>
 											</tr>

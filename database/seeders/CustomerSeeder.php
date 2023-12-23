@@ -17,7 +17,7 @@ class CustomerSeeder extends Seeder
         Customer::insert(
             [
                 [
-                    'name' => 'El badr customer',
+                    'name' => 'مكتب اسطورة',
                     'owner' => 'El badr ',
                     'com_code' => 1008,
                     'phone' => '01081909342',
@@ -26,7 +26,7 @@ class CustomerSeeder extends Seeder
                 ],
                 
                 [
-                    'name' => 'Elmagd customer',
+                    'name' => 'مكتب المجد',
                     'owner' => 'Elmagd',
                     'phone' => '01081909342',
                     'address' => 'cairo',
@@ -36,7 +36,7 @@ class CustomerSeeder extends Seeder
 
                 
                 [
-                    'name' => 'Elhout',
+                    'name' => 'مكتب الحوت',
                     'owner' => 'Elhout',
                     'com_code' => 1010,
                     'phone' => '01081909342',
@@ -47,7 +47,7 @@ class CustomerSeeder extends Seeder
                 
                 
                 [
-                    'name' => 'Ellourd',
+                    'name' => 'مكتب اللورد',
                     'owner' => 'Elmagd',
                     'com_code' => 1009,
                     'phone' => '01081909342',
@@ -58,7 +58,7 @@ class CustomerSeeder extends Seeder
                 
                 
                 [
-                    'name' => 'Rodaina',
+                    'name' => 'مكتب رودينا',
                     'owner' => 'Elmagd',
                     'com_code' => 1009,
                     'phone' => '01081909342',

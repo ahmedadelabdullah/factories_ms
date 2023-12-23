@@ -17,7 +17,13 @@ class CustomerInvoiceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'invoice_number' => fake()->randomDigit,
+            'customer_id' => $this->faker->randomElement(Customer::all())['id'],
+            'n_o_pieces' => fake()->randomDigit,
+            'n_o_models' => fake()->randomDigit,
+            'date' => fake()->date,
+            'n_o_pieces' => fake()->randomDigit,
+            'sub_total' => fake()->randomDigit,
         ];
     }
 }

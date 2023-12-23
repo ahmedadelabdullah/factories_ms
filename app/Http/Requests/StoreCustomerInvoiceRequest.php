@@ -24,16 +24,16 @@ class StoreCustomerInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'invoice_number' => 'required',
-            'date' => 'required',
-            'n_o_pieces' => 'required',
-            'customer' => 'required',
+            // 'invoice_number' => 'required',
+            // 'date' => 'required',
+            // 'n_o_pieces' => 'required',
+            // 'customer' => 'required',
 
-            'quantity' => 'required|array',
-            'quantity.*' => 'required',
+            // 'quantity' => 'required|array',
+            // 'quantity.*' => 'required',
 
-            'price' => 'required|array',
-            'price.*' => 'required',
+            // 'price' => 'required|array',
+            // 'price.*' => 'required',
         ];
     }
 }
