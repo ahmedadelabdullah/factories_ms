@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class CustomerController extends Controller
 {
@@ -17,7 +18,8 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        $customer_sum = Customer::sum('current_balance');
+        return view('customers.index', compact('customers' , 'customer_sum'));
     }
 
     /**
@@ -40,12 +42,11 @@ class CustomerController extends Controller
     {
         $data = [];
         $data['name'] = $request->name;
-        $data['owner'] = $request->owner;
         $data['phone'] = $request->phone;
         $data['address'] = $request->address;
+        $data['start_balance'] = $request->start_balance;
         $data['com_code'] = 1;
         $data['address'] = $request->address;
-        $data['details'] = $request->details;
         $customer = Customer::create($data);
         return redirect()->route('customers.index')->with('adding', 'تم اضافة العنصر بنجاح');
     }
@@ -56,9 +57,16 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($customer)
     {
-        //
+        // dd('customers');
+        $customer = Customer::findOrFail($customer);
+        $invoices_sum = $customer->accounts->sum('total_due_invoice');
+        $returns_sum = $customer->accounts->sum('total_due_return');
+        $payments_sum = $customer->accounts->sum('total_due_payment');
+        
+
+        return view('customers.show' , compact('customer' , 'invoices_sum' , 'returns_sum' , 'payments_sum'));
     }
 
     /**
@@ -86,7 +94,7 @@ class CustomerController extends Controller
          $admin->update([
              'name' => $request->name,
              'phone' => $request->phone,
-             'owner' => $request->owner,
+             'start_balance' => $request->start_balance,
              'address' => $request->address,
              
          ]);

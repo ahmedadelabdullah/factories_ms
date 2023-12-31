@@ -1,7 +1,4 @@
 @extends('layouts.master')
-@section('title')
- برنامج المنظومة || 	لوحة التحكم 
-@endsection
 @section('css')
 <!--  Owl-carousel css-->
 <link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
@@ -35,8 +32,10 @@
 					</div>
 				</div>
 				<!-- /breadcrumb -->
-
-                <div class="row row-sm">
+@endsection
+@section('content')
+				<!-- row -->
+				<div class="row row-sm">
 					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
 						<div class="card overflow-hidden sales-card bg-primary-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
@@ -126,10 +125,6 @@
 						</div>
 					</div>
 				</div>
-@endsection
-{{-- @section('content')
-				<!-- row -->
-
 				<!-- row closed -->
 
 				<!-- row opened -->
@@ -443,7 +438,7 @@
 			</div>
 		</div>
 		<!-- Container closed -->
-@endsection --}}
+@endsection
 @section('js')
 <!--Internal  Chart.bundle js -->
 <script src="{{URL::asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>

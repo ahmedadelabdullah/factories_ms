@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('customer_invoice_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_invoice_id');
+            $table->foreignId('customers_account_id');
             $table->string('product_name');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('row_sub_total');
             $table->timestamps();
 
-            $table->foreign('customer_invoice_id')->references('id')->on('customer_invoices')->onDelete('cascade');
+            $table->foreign('customers_account_id')->references('id')->on('customers_accounts')->onDelete('cascade');
         });
     }
 

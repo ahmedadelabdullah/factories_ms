@@ -24,7 +24,16 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required',
+            'start_balance' => 'required',
+        ];
+    }
+
+        public function message()
+    {
+        return [
+            'name' => 'this field is required',
+            'start_balance' => 'this field is required',
         ];
     }
 }

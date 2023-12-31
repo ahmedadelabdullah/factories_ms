@@ -7,7 +7,9 @@ use App\Http\Requests\StoreCustomerInvoiceRequest;
 use App\Http\Requests\UpdateCustomerInvoiceRequest;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\CustomersAccount;
 use PDF;
+use Illuminate\Http\Request;
 
 class CustomerInvoiceController extends Controller
 {
@@ -18,7 +20,7 @@ class CustomerInvoiceController extends Controller
      */
     public function index()
     {
-        $customer_invoices = CustomerInvoice::orderBy('id', 'desc')->get();
+        $customer_invoices = CustomersAccount::where('mark', '0')->get();
         return view('customerInvoices.index' , compact('customer_invoices'));
         
     }
@@ -56,11 +58,10 @@ class CustomerInvoiceController extends Controller
         $data['sub_total'] = $request->sub_total;
         $data['sale_amount'] = $request->sale_amount;
         $data['discount'] = $request->discount;
-        $data['total_due'] = $request->total_due;
-               $invoice =  CustomerInvoice::create($data);
+        $data['total_due_invoice'] = $request->total_due;
+        $invoice =  CustomersAccount::create($data);
 
         $details_list = [];
-// dd($request->product_id);
         for($i=0 ; $i<count($request->product_name) ; $i++)
         {
             $details_list[$i]['product_name'] = $request->product_name[$i];
@@ -69,7 +70,7 @@ class CustomerInvoiceController extends Controller
             $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
         }
        $details =  $invoice->details()->createMany($details_list);
-       return redirect()->route('customerinvoices.index');
+       return redirect()->route('customerinvoices.index')->with('adding', 'تم اضافة الفاتورة بنجاح');
     }
 
     /**
@@ -80,7 +81,7 @@ class CustomerInvoiceController extends Controller
      */
     public function show($id)
     {
-        $customerInvoice = CustomerInvoice::findOrFail($id);
+        $customerInvoice = CustomersAccount::findOrFail($id);
         return view('customerInvoices.show', compact('customerInvoice'));
     }
 
@@ -92,10 +93,10 @@ class CustomerInvoiceController extends Controller
      */
     public function edit($id)
     {
-        
+       
         $customers = Customer::all();
         $products = Product::all();
-                $invoice = CustomerInvoice::find($id);
+        $invoice = CustomersAccount::find($id);
         return view('customerInvoices.edit' , compact('customers' , 'products' , 'invoice'));
     }
 
@@ -109,7 +110,7 @@ class CustomerInvoiceController extends Controller
     public function update(UpdateCustomerInvoiceRequest $request, $id)
     {
         // return $request;
-        $invoice = CustomerInvoice::findOrFail($id);
+        $invoice = CustomersAccount::findOrFail($id);
 
         $data['customer_id'] = $request->customer;
         $data['invoice_number'] = $request->invoice_number;
@@ -121,7 +122,7 @@ class CustomerInvoiceController extends Controller
         $data['sub_total'] = $request->sub_total;
         $data['sale_amount'] = $request->sale_amount;
         $data['discount'] = $request->discount;
-        $data['total_due'] = $request->total_due;
+        $data['total_due_invoice'] = $request->total_due;
                $invoice->update($data);
                $invoice->details()->delete();
         $details_list = [];
@@ -133,7 +134,7 @@ class CustomerInvoiceController extends Controller
             $details_list[$i]['row_sub_total'] = $request->row_sub_total[$i];
         }
        $details =  $invoice->details()->createMany($details_list);
-       return redirect()->route('customerinvoices.index');
+       return redirect()->route('customerinvoices.index')->with('adding', 'تم تعديل الفاتورة بنجاح');
     }
 
     /**
@@ -142,13 +143,13 @@ class CustomerInvoiceController extends Controller
      * @param  \App\Models\CustomerInvoice  $customerInvoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request , $id)
     {
-    
-        $invoice = CustomerInvoice::findOrFail($id);
-        
+        $invoice = CustomersAccount::findOrFail($request->id);
+        // return $request;
+        // dd($invoice);
         $invoice->delete();
-        return redirect()->route('customerinvoices.index');
+        return redirect()->route('customerinvoices.index')->with('delete', 'تم حذف الفاتورة بنجاح');;
     }
 
 
@@ -162,8 +163,6 @@ class CustomerInvoiceController extends Controller
     public function pdf($id)
     {
         $customerInvoice = CustomerInvoice::findOrFail($id);
-// return $customerInvoice;
-
         $items = [];
         foreach($customerInvoice->details()->get() as $detail){
         $items[] = [
@@ -186,7 +185,7 @@ class CustomerInvoiceController extends Controller
         $data['sub_total'] = $customerInvoice->sub_total;
         $data['sale_amount'] = $customerInvoice->sale_amount;
         $data['discount'] = $customerInvoice->discount;
-        $data['total_due'] = $customerInvoice->total_due;
+        $data['total_due_invoice'] = $customerInvoice->total_due;
 
         $pdf = PDF::loadView('customerinvoices.pdf', $data);
 

@@ -18,18 +18,20 @@ class CustomerSeeder extends Seeder
             [
                 [
                     'name' => 'مكتب اسطورة',
-                    'owner' => 'El badr ',
                     'com_code' => 1008,
                     'phone' => '01081909342',
                     'address' => 'cairo',
+                    'start_balance' => 30000,
+                    'current_balance' => 145625,
                     'status' => 'active',
                 ],
                 
                 [
                     'name' => 'مكتب المجد',
-                    'owner' => 'Elmagd',
                     'phone' => '01081909342',
                     'address' => 'cairo',
+                    'start_balance' => 39000,
+                    'current_balance' => 144425,
                     'com_code' => 1009,
                     'status' => 'active',
                 ],
@@ -37,9 +39,10 @@ class CustomerSeeder extends Seeder
                 
                 [
                     'name' => 'مكتب الحوت',
-                    'owner' => 'Elhout',
                     'com_code' => 1010,
                     'phone' => '01081909342',
+                    'start_balance' => 45000,
+                    'current_balance' => 255625,
                     'address' => 'cairo',
                     'status' => 'active',
              
@@ -48,9 +51,10 @@ class CustomerSeeder extends Seeder
                 
                 [
                     'name' => 'مكتب اللورد',
-                    'owner' => 'Elmagd',
                     'com_code' => 1009,
                     'phone' => '01081909342',
+                    'start_balance' => 97000,
+                    'current_balance' => 255625,
                     'address' => 'cairo',
                     'status' => 'active',
               
@@ -59,9 +63,32 @@ class CustomerSeeder extends Seeder
                 
                 [
                     'name' => 'مكتب رودينا',
-                    'owner' => 'Elmagd',
                     'com_code' => 1009,
                     'phone' => '01081909342',
+                    'start_balance' => 12500,
+                    'current_balance' => 845625,
+                    'address' => 'cairo',
+                    'status' => 'active',
+                ],
+                
+                
+                [
+                    'name' => 'مكتب الشيخ',
+                    'com_code' => 1009,
+                    'phone' => '01081909342',
+                    'start_balance' => 12500,
+                    'current_balance' => 845625,
+                    'address' => 'cairo',
+                    'status' => 'active',
+                ],
+                
+                
+                [
+                    'name' => 'مكتب سعودي',
+                    'com_code' => 1009,
+                    'phone' => '01081909342',
+                    'start_balance' => 12500,
+                    'current_balance' => 845625,
                     'address' => 'cairo',
                     'status' => 'active',
                 ]

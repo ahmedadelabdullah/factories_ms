@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreAdminRequest;
 class AdminController extends Controller
 {
 
@@ -17,7 +17,7 @@ class AdminController extends Controller
      */
    public function index()
    {
-    $users = User::where('role' , 'admin')->get();
+    $users = User::where('id' , '<>' , Auth::user()->id)->orderBy('id' , 'desc')->get();
        return view('admins.index' , compact('users'));
    }
 
@@ -28,8 +28,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        
-        
+
+
     }
 
     /**
@@ -38,8 +38,18 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAdminRequest $request)
     {
+        // $request->validate([
+        //     'password' => 'required|confirmed|min:6',
+        //     'password_confirmation' => 'required',
+        //     'name' => 'required',
+        //     'user_name' => 'required',
+        //     'phone' => 'required',
+        // ],[
+        //     'password' => 'الرقم السري غير متطابق',
+        // ]);
+        // return $request;
         $data = [];
         $data['name'] = $request->name;
         $data['user_name'] = $request->user_name;
@@ -48,12 +58,18 @@ class AdminController extends Controller
         $data['com_code'] = 1;
         $data['address'] = $request->address;
         $data['role'] = 'admin';
-        $data['password'] = Hash::make(123);
-
-     
+        $data['password'] = Hash::make($request->password);
 
         $user = User::create($data);
-        return redirect()->route('admin.admins.index')->with('adding', 'تم اضافة العنصر بنجاح');
+       if(!$user){
+           $messages = $validator->errors();
+           return redirect()->route('admin.admins.index')->withErrors($messages)->withInput()->first();
+       }
+       else
+       {
+           return redirect()->route('admin.admins.index')->with('adding', 'تم اضافة العنصر بنجاح');
+
+       }
     }
 
     /**
@@ -75,8 +91,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-      
-        
+
+
     }
 
     /**
@@ -98,7 +114,7 @@ class AdminController extends Controller
             'com_code' => 1,
             'address' => $request->address,
             'role' => 'admin',
-            
+
         ]);
     return redirect()->route('admin.admins.index')->with('success', 'تم تحديث البيانات بتجاح');
     }
@@ -111,7 +127,7 @@ class AdminController extends Controller
      */
 
 
-    
+
 
     /**
      * Remove the specified resource from storage.

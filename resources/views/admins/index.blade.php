@@ -24,6 +24,15 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table id="example" class="table key-buttons text-md-nowrap w-100">
+									    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $message)
+                    <li style="list-style: none" class="pt-3">{{ $message }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 										@if(session('success'))
 										<div class="alert alert-success" id="alert-success">
 										{{session('success')}}
@@ -41,6 +50,12 @@
 									{{session('adding')}}
 								  </div>
 								  @endif
+
+								  @if(session('error'))
+								  <div class="alert alert-danger">
+								  {{session('error')}}
+								</div>
+								@endif
 										<thead>
 											<tr>
 												<th class="border-bottom-0">#</th>
@@ -135,10 +150,10 @@
 											<label for="exampleInputEmail1" class="form-label">موبايل </label>
 											<input type="name" name="phone" id="phone" placeholder="موبايل" class="form-control"  aria-describedby="emailHelp">
 										  </div>
-										  <div class="mb-3 col-md-6">
+										  {{-- <div class="mb-3 col-md-6">
 											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
 											<input type="email" name="email" id="email" placeholder="البريد الالكتروني"  class="form-control"  aria-describedby="emailHelp">
-										  </div>
+										  </div> --}}
 									</div>
 									
 									<div class="modal-footer">
@@ -168,20 +183,30 @@
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="exampleInputEmail1" class="form-label">اسم المستخدم</label>
-											<input type="user_name" name="user_name" placeholder="اسم المستخدم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+											<input type="text" name="user_name" placeholder="اسم المستخدم" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 										  </div>
-										  <div class="mb-3 col-md-12">
+										  {{-- <div class="mb-3 col-md-12">
 											<label for="exampleInputEmail1" class="form-label">العنوان </label>
 											<input type="user_name" name="address" placeholder="العنوان" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
+										  </div> --}}
 										  <div class="mb-3 col-md-12">
-											<label for="exampleInputEmail1" class="form-label">موبايل </label>
-											<input type="user_name" name="phone" placeholder="موبايل" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+											<label for="exampleInputEmail1" class="form-label">موبايل  </label>
+											<input type="text" name="phone" placeholder="موبايل" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 										  </div>
+
 										  <div class="mb-3 col-md-12">
+											<label for="exampleInputEmail1" class="form-label"> الرقم السري </label>
+											<input type="password" name="password" placeholder="الرقم السري" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+
+										  <div class="mb-3 col-md-12">
+											<label  class="form-label">تاكيد الرقم السري </label>
+											<input type="password" name="password_confirmation" placeholder="الرقم السري" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										  </div>
+										  {{-- <div class="mb-3 col-md-12">
 											<label for="exampleInputEmail1" class="form-label">البريد الالكتروني </label>
 											<input type="email" name="email" placeholder="البريد الالكتروني " class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-										  </div>
+										  </div> --}}
 									</div>
 									<div class="modal-footer">
 										<button class="btn ripple btn-primary" type="submit">حفظ</button>

@@ -48,36 +48,32 @@
 												<th class="border-bottom-0">العميل</th>
 												<th class="border-bottom-0"> القطع</th>
 												<th class="border-bottom-0">التاريخ </th>
-		
 												<th class="border-bottom-0"> المبلغ الكلي</th>
 												<th class="border-bottom-0">العمليات</th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php $i = 0 ;?>
 											@foreach ($customer_invoices as $customer_invoice)
-											<?php $i ++ ;?>
 											<tr class="">
-												<td>{{$i}}</td>
+												<td>{{$loop->index + 1}}</td>
 												<td>{{$customer_invoice->invoice_number}}</td>
-												{{-- <td>{{$user->user_name}}</td> --}}
-												<td>{{$customer_invoice->customer->name}}</td>
-												
+												<td><a href="{{route('customers.show' , $customer_invoice->customer->id)}}">{{$customer_invoice->customer->name}}</a></td>
 												<td>{{$customer_invoice->n_o_pieces}}</td>
 												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
 												<td>{{$customer_invoice->date}}</td>
 									
-												<td>{{$customer_invoice->total_due}}</td>
+												<td>{{$customer_invoice->total_due_invoice}}</td>
 												
 												<td>
 													<a class="btn btn-primary text-white" href="{{route('customerinvoices.show' , $customer_invoice->id)}}">تفاصيل</a>
 
 													<a class="btn btn-primary text-white" href="{{route('customerinvoices.edit' , $customer_invoice->id)}}">تعديل</a>
-													<form  action="{{route('customerinvoices.destroy' , $customer_invoice->id)}}" method="POST" style="display: inline-block">
+													{{-- <form  action="{{route('customerinvoices.destroy' , $customer_invoice->id)}}" method="POST" style="display: inline-block">
 														@csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger" type="submit">حذف</button>
-													</form>
+													</form> --}}
+													<a class="modal-effect btn btn-danger user-dialog" data-id="{{$customer_invoice->id}}" data-name="{{$customer_invoice->invoice_number}}" data-effect="effect-scale" data-toggle="modal" href="#modaldemo2">حذف</a>
 
 												</td>
 											</tr>
@@ -88,7 +84,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="modal" id="modaldemo2">
+						<form class="modal-dialog" action="{{route('customerinvoices.destroy' , $customer_invoice->id)}}" method="POST">
+							@csrf
+							@method('DELETE')
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 class="modal-title">حذف فاتورة</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span>
+								</button>
+							  </div>
+							  <input type="hidden" id="id" name="id">
+							  <div class="modal-body">
+								<p>هل انت متأكد من حذف الفاتورة رقم  <span id="deletedName"></span></p>
+							  </div>
+							  <div class="modal-footer">
+								<button type="submit" class="btn btn-danger">حذف</button>
 
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+							  </div>
+							</div>
+						  </form>
+					</div>
 				</div>
 				</div>
 				<!-- /row -->
@@ -128,7 +146,6 @@
 
 		var id = $(this).data('id');
     	$("#modaldemo2 #id").val( id );
-		
 		var name = $(this).data('name');
 		$("#modaldemo2 #id").val( id );
 		document.getElementById("deletedName").innerHTML = name;

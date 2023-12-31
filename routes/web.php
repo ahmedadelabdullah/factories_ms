@@ -3,9 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CustomerInvoiceController;
+use App\Http\Controllers\CustomersAccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SalesReturnController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CustomerInvoiceController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,9 +24,7 @@ Route::view('/', 'auth.login')->name('login');
 
 Route::middleware(['auth'])->group(function () {
    // Start Admins Routes
-
 Route::middleware(['auth' , 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
     Route::view('/dashboard', 'admins.dashboard')->name('dashboard');
     // Route::view('/admins', 'admins.index')->name('index');
 
@@ -39,9 +41,13 @@ Route::get('invoice/pdf/{id}', [CustomerInvoiceController::class , 'pdf']);
 Route::view('test', 'invoice');
 
 
-Route::resource('/customerinvoices', CustomerInvoiceController::class);
+Route::resource('/customeraccounts', CustomersAccountController::class);
+Route::resource('/sales_returns', SalesReturnController::class);
+
 Route::resource('/products', ProductController::class);
 Route::resource('/customers', CustomerController::class);
+Route::resource('/customerinvoices', CustomerInvoiceController::class);
+Route::resource('/payments', PaymentController::class);
 
 
 
@@ -89,13 +95,6 @@ Route::middleware(['auth'])->group(function () {
 // End Custosmers Routes
  
 });
-
-
-
-
-
-
-
 
 
 

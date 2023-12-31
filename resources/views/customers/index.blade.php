@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
- برنامج المنظومة || 	المسؤلون  
+ برنامج المنظومة || 	العملاء  
 @endsection
 @section('css')
 <!--  Owl-carousel css-->
@@ -47,6 +47,7 @@
 												<th class="border-bottom-0">الاسم</th>
 												<th class="border-bottom-0">موبايل</th>
 												<th class="border-bottom-0">العنوان </th>
+												<th class="border-bottom-0">الرصيد الحالى </th>
 												<th class="border-bottom-0">الحالة</th>
 												<th class="border-bottom-0">العمليات</th>
 											</tr>
@@ -54,15 +55,15 @@
 										<tbody>
 											<?php $i = 0 ;?>
 											@foreach ($customers as $customer)
-											<?php $i ++ ;?>
 											<tr class="">
-												<td>{{$i}}</td>
-												<td>{{$customer->name}}</td>
+												<td>{{$loop->index + 1}}</td>
+												<td><a href="{{route('customers.show' , $customer->id)}}">{{$customer->name}}</a></td>
 												<td>{{$customer->phone}}</td>
 												<td>{{$customer->address}}</td>
 												{{-- <td>{{$user->user_name}}</td> --}}
 												
 												{{-- <td><img src="{{(!empty($user->photo)) ? url('uploads/profile_images/'.$user->photo) : url('uploads/profile_images/no_image.png')}}" style="width: 50px"></td> --}}
+												<td>{{$customer->current_balance}}</td>
 												<td>{{$customer->status}}</td>
 												
 												<td>
@@ -101,21 +102,21 @@
 										  <label for="name" class="form-label">الاسم</label>
 										  <input type="text" name="name" id="name" class="form-control" id="name" aria-describedby="emailHelp">
 										</div>
-										  <div class="mb-3 col-md-12">
-											<label for="owner" class="form-label">المالك </label>
-											<input type="text" name="owner" id="owner" placeholder="المالك" class="form-control" id="owner" aria-describedby="emailHelp">
-										  </div>
 
-										  <div class="mb-3 col-md-12">
+										  <div class="mb-3 col-md-6">
 											<label for="phone" class="form-label">موبايل </label>
 											<input type="number" name="phone" id="phone" placeholder="موبايل" class="form-control" id="phone" aria-describedby="emailHelp">
 										  </div>
 
-										  <div class="mb-3 col-md-12">
+										  <div class="mb-3 col-md-6">
 											<label for="address" class="form-label">العنوان </label>
 											<input type="text" name="address" id="address" placeholder="العنوان" class="form-control" id="address" aria-describedby="emailHelp">
 										  </div>
-							
+
+										  <div class="mb-3 col-md-6">
+											<label for="address" class="form-label">الرصيد الابتدائي </label>
+											<input type="number" name="start_balance" id="address" placeholder="الرصيد الابتدائي " class="form-control" id="address" aria-describedby="emailHelp">
+										  </div>
 									</div>
 									<div class="modal-footer">
 										<button class="btn ripple btn-primary" type="submit">حفظ</button>
@@ -142,19 +143,21 @@
 										  <label for="name" class="form-label">الاسم</label>
 										  <input type="text" name="name" placeholder="الاسم" class="form-control" id="name" aria-describedby="emailHelp">
 										</div>
-										  <div class="mb-3 col-md-12">
-											<label for="owner" class="form-label">المالك </label>
-											<input type="text" name="owner" placeholder="المالك" class="form-control" id="owner" aria-describedby="emailHelp">
-										  </div>
+								
 
-										  <div class="mb-3 col-md-12">
+										  <div class="mb-3 col-md-6">
 											<label for="phone" class="form-label">موبايل </label>
 											<input type="number" name="phone" placeholder="موبايل" class="form-control" id="phone" aria-describedby="emailHelp">
 										  </div>
 
-										  <div class="mb-3 col-md-12">
+										  <div class="mb-3 col-md-6">
 											<label for="address" class="form-label">العنوان </label>
 											<input type="text" name="address" placeholder="العنوان" class="form-control" id="address" aria-describedby="emailHelp">
+										  </div>
+
+										  <div class="mb-3 col-md-12">
+											<label for="address" class="form-label">الرصيد الابتدائي </label>
+											<input type="text" name="start_balance" placeholder="الرصيد الابتدائي " class="form-control" id="address" aria-describedby="emailHelp">
 										  </div>
 										
 									</div>
